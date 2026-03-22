@@ -20,7 +20,6 @@ async function saveToFile(items: Item[]): Promise<string> {
 
 async function deployWithFtp(feedPath: string): Promise<void> {
     const client = new Client();
-    client.ftp.verbose = true;
     try {
         // Read FTP configuration from environment variables
         const host = process.env.FTP_HOST;

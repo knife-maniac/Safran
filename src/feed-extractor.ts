@@ -1,4 +1,5 @@
 import Parser from 'rss-parser';
+import { feedConfiguration } from './feed-configuration';
 
 const parser = new Parser();
 
@@ -6,6 +7,7 @@ const parser = new Parser();
 export type Item = {
     feedIcon: string | null;
     feedTitle: string;
+    feedConfiguration: feedConfiguration
 
     title: string;
     link: string;
@@ -50,13 +52,13 @@ function getFavicon(rawUrl: string): string | null {
     }
 }
 
-async function fetchFeedItems(feedUrl: string): Promise<Item[]> {
-    const feed = await parser.parseURL(feedUrl);
-
-    const items: Item[] = (feed.items || []).map((i: any) => {
+async function fetchFeedItems(feed: feedConfiguration): Promise<Item[]> {
+    const result = await parser.parseURL(feed.url);
+    const items: Item[] = (result.items || []).map((i: any) => {
         return {
-            feedIcon: getFeedIcon(feed) ?? getFavicon(feedUrl),
-            feedTitle: feed.title ?? '',
+            feedIcon: getFeedIcon(result) ?? getFavicon(feed.url),
+            feedTitle: feed.name ?? result.title ?? '',
+            feedConfiguration: feed,
             title: i.title ?? '',
             link: i.link ?? i.guid ?? '',
             content: i.contentSnippet ?? i.content ?? '',
@@ -67,9 +69,9 @@ async function fetchFeedItems(feedUrl: string): Promise<Item[]> {
     return items;
 }
 
-export async function extract(feedsUrls: string[]): Promise<Item[]> {
-    const promises = feedsUrls.map(u => fetchFeedItems(u).catch(err => {
-        console.warn('Failed to fetch', u, err?.message || err);
+export async function extract(feeds: feedConfiguration[]): Promise<Item[]> {
+    const promises = feeds.map(f => fetchFeedItems(f).catch(err => {
+        console.warn(`Failed to fetch feed '${f.name}' (${f.url}) : ${err?.message || err}`);
         return [] as Item[];
     }));
     const results = await Promise.all(promises);

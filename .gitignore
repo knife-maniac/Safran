@@ -129,6 +129,9 @@ dist
 # pnpm
 .pnpm-store
 
+#MacOs
+.DS_Store
+
 # yarn v3
 .pnp.*
 .yarn/*
