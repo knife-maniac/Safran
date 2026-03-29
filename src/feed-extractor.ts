@@ -21,13 +21,6 @@ export type Item = {
 };
 
 
-function getImageFromRaw(text: any): string | null {
-    // try to extract first <img> from content or content:encoded
-    const m = /<img[^>]+src=["']?([^"' >]+)["']?/i.exec(String(text));
-    if (m && m[1]) return m[1];
-    return null;
-}
-
 function getFeedIcon(feed: Feed, feedUrl: string): string | null {
     let feedIcon = feed?.image?.url ?? null;
     if (feedIcon === null) {
@@ -42,9 +35,34 @@ function getFeedIcon(feed: Feed, feedUrl: string): string | null {
 }
 
 
+function getImageFromRaw(text: any): string | null {
+    // try to extract first <img> from text
+    const match = /<img[^>]+src=["']?([^"' >]+)["']?/i.exec(String(text));
+    if (match && match[1]) return match[1];
+    return null;
+}
+
+function getImage(item: FeedItem): string | null {
+    // console.log(item);
+    if (!item) return null;
+    if (item.image?.url) return item.image.url;
+    if (item.media && item.media.length > 0) {
+        const media = item.media[0];
+        const FILE_TYPE_REGEX = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
+        if (media.image && FILE_TYPE_REGEX.test(media.image)) return media.image;
+        if (media.url && FILE_TYPE_REGEX.test(media.url)) return media.url;
+    }
+    // Last ressort: Try to parse item's description and content
+    return getImageFromRaw(item.description)
+        || getImageFromRaw(item.content)
+        || null;
+}
+
+
 async function fetchFeedItems(feedConfiguration: feedConfiguration): Promise<Item[]> {
     const response = await fetch(feedConfiguration.url);
     const feed: Feed = parseFeed(await response.text());
+    // console.log(JSON.stringify(feed));
     const items: Item[] = (feed.items).map((item: FeedItem) => {
         return {
             feedConfiguration,
@@ -54,7 +72,7 @@ async function fetchFeedItems(feedConfiguration: feedConfiguration): Promise<Ite
             title: item.title ?? '',
             link: item.url ?? '',
             description: item.description ?? item.content ?? '',
-            image: item.image?.url || getImageFromRaw(item.description) || getImageFromRaw(item.content),
+            image: getImage(item),
             pubDate: item.published ? new Date(item.published).toISOString() : null
         };
     });
