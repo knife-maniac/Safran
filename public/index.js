@@ -17,6 +17,7 @@ function timeAgo(dateAsString) {
 
 function createItemElement(item) {
     const li = document.createElement('li');
+    li.className = 'item';
 
     // Header div with feed icon, feed title and score
     const header = document.createElement('div');
@@ -27,7 +28,7 @@ function createItemElement(item) {
     icon.src = item.feedIcon;
     icon.alt = item.feedTitle ? `${item.feedTitle} icon` : 'Feed icon';
     icon.className = 'feed-icon';
-    icon.onerror = () => { icon.onerror = null; icon.src = '/placeholder.webp'; };
+    icon.onerror = () => { icon.onerror = null; };
     header.appendChild(icon);
 
     // Feed title
@@ -47,24 +48,14 @@ function createItemElement(item) {
     // Append header to list item
     li.appendChild(header);
 
-    // Thumbnail image
+    // Image
     if (item.image) {
-        const thumbWrap = document.createElement('div');
-        thumbWrap.className = 'item-thumb';
-        const thumb = document.createElement('img');
-        thumb.src = item.image;
-        thumb.alt = item.title || '';
-        thumb.onerror = () => { thumb.onerror = null; };
-        thumbWrap.appendChild(thumb);
-        description.appendChild(thumbWrap);
+        const image = document.createElement('img');
+        image.src = item.image;
+        image.alt = item.title || '';
+        image.onerror = () => { image.onerror = null; }
+        li.appendChild(image);
     }
-
-    // Description row
-    const description = document.createElement('div');
-    description.className = 'item-description';
-
-    const main = document.createElement('div');
-    main.className = 'item-main';
 
     // Title as a link
     const a = document.createElement('a');
@@ -72,16 +63,16 @@ function createItemElement(item) {
     a.textContent = item.title || '(no title)';
     a.target = '_blank';
     a.className = 'item-title';
-    main.appendChild(a);
+    li.appendChild(a);
 
-    // Description snippet
+    // Description
     if (item.description) {
-        const span = document.createElement('span');
-        span.className = 'snippet';
+        const description = document.createElement('span');
+        description.className = 'description';
         // Truncate description to ~300 chars for preview
         const txt = String(item.description).replace(/<[^>]+>/g, '');
-        span.textContent = txt.length > 300 ? txt.slice(0, 300) + '…' : txt;
-        main.appendChild(span);
+        description.textContent = txt.length > 300 ? txt.slice(0, 300) + '…' : txt;
+        li.appendChild(description);
     }
 
     // Footer with publication date (shows relative time)
@@ -90,12 +81,7 @@ function createItemElement(item) {
     if (item.pubDate) {
         footer.textContent = timeAgo(item.pubDate);
     }
-    main.appendChild(footer);
-
-    description.appendChild(main);
-
-    // Append description to list item
-    li.appendChild(description);
+    li.appendChild(footer);
 
     return li;
 }
