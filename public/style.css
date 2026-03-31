@@ -28,7 +28,6 @@ body {
 main {
     color: var(--background-contrast-color);
     margin: 36px auto;
-    max-width: 900px;
     padding: 18px;
 }
 
@@ -48,9 +47,13 @@ h1 {
 }
 
 ul#items {
+    column-gap: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
+    row-gap: 1rem;
 }
 
 ul#items li {
@@ -62,14 +65,14 @@ ul#items li {
     gap: 1rem;
     margin-top: 1rem;
     overflow: auto;
-    padding: 1.5rem 2rem;
 }
 
 ul#items li .item-header {
-    display: flex;
     align-items: center;
+    display: flex;
     gap: 0.5rem;
-    width: 100%;
+    padding: 1rem;
+    padding-bottom: 0;
 }
 
 .item-header .feed-icon {
@@ -106,6 +109,8 @@ ul#items li .item-header {
 .item-description .item-main {
     display: flex;
     flex-direction: column;
+    padding: 1rem;
+    padding-top: 0;
 }
 
 ul#items li:first-child {
@@ -128,7 +133,7 @@ ul#items .date {
 
 .item-thumb {
     overflow: hidden;
-    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .item-thumb img {

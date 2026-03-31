@@ -1,6 +1,8 @@
-# Self-hosted, end-to-end RSS solution
-This is a self-hosted solution to consume RSS feeds.
-It allows you to declare, fetch, parse, format, aggregate, and deploy them.
+# Safran
+> Self-hosted Aggregator For Rss/Atom News
+
+This is a self-hosted solution to consume RSS feeds. It allows you to declare, fetch, parse, format, aggregate, grade, elect, sort, deploy and view them.
+
 
 ## Set up
 1. Install all dependencies:

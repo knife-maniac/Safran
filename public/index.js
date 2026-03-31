@@ -47,7 +47,19 @@ function createItemElement(item) {
     // Append header to list item
     li.appendChild(header);
 
-    // Description row: left = main text, right = optional thumbnail
+    // Thumbnail image
+    if (item.image) {
+        const thumbWrap = document.createElement('div');
+        thumbWrap.className = 'item-thumb';
+        const thumb = document.createElement('img');
+        thumb.src = item.image;
+        thumb.alt = item.title || '';
+        thumb.onerror = () => { thumb.onerror = null; };
+        thumbWrap.appendChild(thumb);
+        description.appendChild(thumbWrap);
+    }
+
+    // Description row
     const description = document.createElement('div');
     description.className = 'item-description';
 
@@ -62,7 +74,7 @@ function createItemElement(item) {
     a.className = 'item-title';
     main.appendChild(a);
 
-    // Optional description snippet
+    // Description snippet
     if (item.description) {
         const span = document.createElement('span');
         span.className = 'snippet';
@@ -72,7 +84,7 @@ function createItemElement(item) {
         main.appendChild(span);
     }
 
-    // Footer with publication date (show relative time)
+    // Footer with publication date (shows relative time)
     const footer = document.createElement('div');
     footer.className = 'item-footer';
     if (item.pubDate) {
@@ -81,18 +93,6 @@ function createItemElement(item) {
     main.appendChild(footer);
 
     description.appendChild(main);
-
-    // Thumbnail on the right (optional)
-    if (item.image) {
-        const thumbWrap = document.createElement('div');
-        thumbWrap.className = 'item-thumb';
-        const thumb = document.createElement('img');
-        thumb.src = item.image || '/placeholder.webp';
-        thumb.alt = item.title || '';
-        thumb.onerror = () => { thumb.onerror = null; thumb.src = '/placeholder.webp'; };
-        thumbWrap.appendChild(thumb);
-        description.appendChild(thumbWrap);
-    }
 
     // Append description to list item
     li.appendChild(description);
@@ -107,7 +107,8 @@ async function load() {
 
     try {
         // fetch the feed items from the backend API
-        const res = await fetch('/projects/shrapnel/feed.json', { cache: 'no-store' });
+        // TODO: Use URL configured in .env file
+        const res = await fetch('/projects/safran/feed.json', { cache: 'no-store' });
         if (!res.ok) throw new Error(await res.text());
 
         // parse the JSON response

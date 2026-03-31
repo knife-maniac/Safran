@@ -1,7 +1,7 @@
 {
-  "name": "self-hosted-rss",
+  "name": "safran",
   "version": "0.1.0",
-  "description": "Self-hosted RSS solution",
+  "description": "Self-hosted Aggregator For RSS/Atom News",
   "license": "ISC",
   "author": "Ruben Quast",
   "type": "module",
