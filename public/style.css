@@ -1,4 +1,5 @@
 body {
+    --title-color: red;
     --main-background-color: #f7f7f8;
     --main-background-contrast-color: #111;
 
@@ -8,11 +9,13 @@ body {
 }
 
 body[data-theme=dark] {
-    --main-background-color: #222222;
+    --title-color: #78acff;
+    --main-background-color: #18181b;
     --main-background-contrast-color: #ffffff;
-    --background-color: #121212;
-    --background-contrast-color: #e3e3e3;
-    --link-color: #0070f3;
+
+    --background-color: #0e0d10;
+    --background-contrast-color: #9f9fa9;
+    --link-color: var(--title-color);
 }
 
 @font-face {
@@ -20,8 +23,19 @@ body[data-theme=dark] {
     src: url(./RobotoMono.ttf);
 }
 
+@font-face {
+    font-family: 'Send Flowers';
+    src: url(./SendFlowers.ttf);
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url(./Montserrat.ttf);
+}
+
+
 body {
-    font-family: 'Roboto Mono';
+    font-family: 'Montserrat', 'Roboto Mono';
     margin: 0;
     height: 100vh;
     padding: 0;
@@ -32,13 +46,15 @@ body {
 
 main {
     color: var(--background-contrast-color);
-    margin: 36px auto;
     padding: 18px;
 }
 
 h1 {
-    color: var(--main-background-contrast-color);
+    color: var(--title-color);
+    font-family: Send flowers;
+    font-size: 5rem;
     margin: 0;
+    text-align: center;
 }
 
 #status {
@@ -66,7 +82,7 @@ h1 {
 .item {
     background: var(--background-color);
     border-radius: 8px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 0.3rem 0.3rem 1.2rem rgba(0, 0, 0, 30%);
     display: flex;
     flex-direction: column;
     padding: 1rem 0;
@@ -95,6 +111,7 @@ h1 {
 }
 
 .item .item-header .feed-title {
+    color: var(--main-background-contrast-color);
     font-size: 0.9rem;
 }
 
@@ -114,9 +131,11 @@ h1 {
 }
 
 .item img {
+    height: 10rem;
     max-width: 100%;
-    width: 100%;
+    object-fit: cover;
     padding: 0;
+    width: 100%;
 }
 
 .item a {

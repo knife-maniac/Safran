@@ -101,7 +101,7 @@ async function load() {
         const { items, fetchedAt } = await res.json();
         status.textContent = `Loaded ${items.length} items`;
         if (fetchedAt && fetchedEl) {
-            fetchedEl.textContent = `Fetched ${timeAgo(fetchedAt)} (${new Date(fetchedAt).toLocaleString()})`;
+            fetchedEl.textContent = `Fetched ${timeAgo(fetchedAt)}`;
         } else if (fetchedEl) {
             fetchedEl.textContent = '';
         }
