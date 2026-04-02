@@ -1,20 +1,17 @@
 import { parseFeed } from '@rowanmanning/feed-parser';
-
-import { feedConfiguration } from './feed-configuration';
 import { Feed } from '@rowanmanning/feed-parser/lib/feed/base';
 import { FeedItem } from '@rowanmanning/feed-parser/lib/feed/item/base';
 
+import { IFeedConfiguration } from './feed-configuration.js';
 
 
-export type Item = {
+export type IItem = {
     feedIcon: string | null;
     feedTitle: string;
-    feedConfiguration: feedConfiguration
-
+    feedConfiguration: IFeedConfiguration
     title: string;
     link: string;
     score?: number;
-
     description?: string;
     image?: string | null;
     pubDate?: string | null;
@@ -43,7 +40,6 @@ function getImageFromRaw(text: any): string | null {
 }
 
 function getImage(item: FeedItem): string | null {
-    // console.log(item);
     if (!item) return null;
     if (item.image?.url) return item.image.url;
     if (item.media && item.media.length > 0) {
@@ -59,16 +55,14 @@ function getImage(item: FeedItem): string | null {
 }
 
 
-async function fetchFeedItems(feedConfiguration: feedConfiguration): Promise<Item[]> {
+async function extractFromRSS(feedConfiguration: IFeedConfiguration): Promise<IItem[]> {
     const response = await fetch(feedConfiguration.url);
     const feed: Feed = parseFeed(await response.text());
-    // console.log(JSON.stringify(feed));
-    const items: Item[] = (feed.items).map((item: FeedItem) => {
+    const items: IItem[] = (feed.items).map((item: FeedItem) => {
         return {
             feedConfiguration,
             feedTitle: feedConfiguration.name ?? feed.title ?? '',
             feedIcon: getFeedIcon(feed, feedConfiguration.url),
-
             title: item.title ?? '',
             link: item.url ?? '',
             description: item.description ?? item.content ?? '',
@@ -79,18 +73,25 @@ async function fetchFeedItems(feedConfiguration: feedConfiguration): Promise<Ite
     return items;
 }
 
-export async function extract(feeds: feedConfiguration[]): Promise<Item[]> {
-    const promises = feeds.map(f => fetchFeedItems(f).catch(err => {
-        console.warn(`Failed to fetch feed '${f.name}' (${f.url}) : ${err?.message || err}`);
-        return [] as Item[];
+
+export async function extract(feeds: IFeedConfiguration[]): Promise<IItem[]> {
+    const items: IItem[] = [];
+    await Promise.all(feeds.map(async feed => {
+        try {
+            // Checks custom extractor first, then defaults to RSS extractor
+            const feedItems = await (feed.extractor || extractFromRSS)(feed);
+            items.push(...feedItems);
+        } catch (err) {
+            console.warn(`Failed to fetch feed '${feed.name}' (${feed.url}) : ${err}`);
+        }
     }));
-    const results = await Promise.all(promises);
-    const combined = results.flat();
+
     // sort by pubDate descending when available
-    combined.sort((a, b) => {
+    items.sort((a, b) => {
         const ta = a.pubDate ? Date.parse(a.pubDate) : 0;
         const tb = b.pubDate ? Date.parse(b.pubDate) : 0;
         return tb - ta;
     });
-    return combined;
+
+    return items;
 }

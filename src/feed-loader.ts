@@ -1,10 +1,10 @@
 import 'dotenv/config';
 import { Client } from 'basic-ftp';
 
-import { Item } from './feed-extractor.js';
+import { IItem } from './feed-extractor.js';
 
 
-async function saveToFile(items: Item[]): Promise<string> {
+async function saveToFile(items: IItem[]): Promise<string> {
     // save to local file (include fetch timestamp)
     const fs = await import('fs/promises');
     const cwd = process.cwd();
@@ -42,7 +42,7 @@ async function deployWithFtp(feedPath: string): Promise<void> {
 }
 
 
-export async function load(items: Item[]) {
+export async function load(items: IItem[]) {
     const filePath = await saveToFile(items);
     await deployWithFtp(filePath);
 }

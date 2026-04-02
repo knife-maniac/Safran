@@ -1,7 +1,7 @@
-import { Item } from './feed-extractor';
+import { IItem } from './feed-extractor.js';
 
 
-export function transform(items: Item[]): Item[] {
+export function transform(items: IItem[]): IItem[] {
     // Remove duplicate items (URL is used as a unique identifier)
     const uniqueItems = items.filter((item, index, self) => {
         return index === self.findIndex((t) => t.link === item.link);
@@ -14,7 +14,7 @@ export function transform(items: Item[]): Item[] {
             if (ageInHours <= 36) acc.push(item);
         }
         return acc;
-    }, [] as Item[]);
+    }, [] as IItem[]);
 
     // Limit number of items from each feed according to its own configuration
     const limitedItems = recentItems.reduce((acc, item) => {
@@ -24,7 +24,7 @@ export function transform(items: Item[]): Item[] {
             acc.push(item);
         }
         return acc;
-    }, [] as Item[]);
+    }, [] as IItem[]);
 
     return limitedItems;
 }

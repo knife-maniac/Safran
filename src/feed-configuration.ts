@@ -1,10 +1,12 @@
-export interface feedConfiguration {
+import { IItem } from './feed-extractor.js';
+export interface IFeedConfiguration {
     url: string;
     name?: string;
     limitNumberTo?: number;
+    extractor?: (feedConfiguration: IFeedConfiguration) => Promise<IItem[]>
 }
 
-export const FEEDS: feedConfiguration[] = [
+export const FEEDS: IFeedConfiguration[] = [
     {
         name: 'Cambridge Analytica',
         url: 'https://cambridgeanalytica.org/feed/'
