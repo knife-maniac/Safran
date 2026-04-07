@@ -25,9 +25,9 @@ function createItemElement(item) {
 
     // Feed icon (small)
     const icon = document.createElement('img');
+    icon.className = 'feed-icon';
     icon.src = item.feedIcon;
     icon.alt = item.feedTitle ? `${item.feedTitle} icon` : 'Feed icon';
-    icon.className = 'feed-icon';
     icon.onerror = () => { icon.onerror = null; };
     header.appendChild(icon);
 
@@ -51,9 +51,14 @@ function createItemElement(item) {
     // Image
     if (item.image) {
         const image = document.createElement('img');
+        image.className = 'thumbnail';
         image.src = item.image;
         image.alt = item.title || '';
         image.onerror = () => { image.onerror = null; }
+        image.addEventListener('click', () => {
+            showImage(image.src, image.alt);
+        });
+
         li.appendChild(image);
     }
 
@@ -86,18 +91,33 @@ function createItemElement(item) {
     return li;
 }
 
+function showImage(src, alt = '') {
+    const wrapper = document.getElementById('image-showcase');
+    wrapper.classList.add('open');
+    const img = wrapper.querySelector('img');
+    img.src = src;
+    img.alt = alt;
+}
+
+function hideShowcase() {
+    const wrapper = document.getElementById('image-showcase');
+    wrapper.classList.remove('open');
+    wrapper.src = '';
+    wrapper.alt = '';
+}
+
 async function load() {
     const status = document.getElementById('status');
     const list = document.getElementById('items');
     const fetchedEl = document.getElementById('fetched');
 
     try {
-        // fetch the feed items from the backend API
+        // Fetch the feed items from the backend API
         // TODO: Use URL configured in .env file
         const res = await fetch('/projects/safran/feed.json', { cache: 'no-store' });
         if (!res.ok) throw new Error(await res.text());
 
-        // parse the JSON response
+        // Parse the JSON response
         const { items, fetchedAt } = await res.json();
         status.textContent = `Loaded ${items.length} items`;
         if (fetchedAt && fetchedEl) {
@@ -106,7 +126,7 @@ async function load() {
             fetchedEl.textContent = '';
         }
 
-        // create and append list items for each feed item
+        // Create and append list items for each feed item
         items.forEach(it => {
             const li = createItemElement(it);
             list.appendChild(li);
@@ -117,4 +137,16 @@ async function load() {
     }
 }
 
-window.addEventListener('DOMContentLoaded', load);
+window.addEventListener('DOMContentLoaded', () => {
+    // clicking the backdrop or image closes the showcase
+    const wrapper = document.getElementById('image-showcase');
+    wrapper.addEventListener('click', () => hideShowcase());
+
+    // allow Escape to close showcase
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') hideShowcase();
+    });
+
+    // Load content
+    load();
+});
