@@ -9,7 +9,8 @@ body {
 }
 
 body[data-theme=dark] {
-    --title-color: #78acff;
+    --header-color: #000000;
+    --title-color: #ff9d47;
     --main-background-color: #18181b;
     --main-background-contrast-color: #ffffff;
 
@@ -33,11 +34,15 @@ body[data-theme=dark] {
     src: url(./Montserrat.ttf);
 }
 
+@font-face {
+    font-family: 'Abril Fatface';
+    src: url(./Montserrat.ttf);
+}
+
 
 body {
-    font-family: 'Montserrat', 'Roboto Mono';
+    font-family: 'Roboto Mono';
     margin: 0;
-    height: 100vh;
     padding: 0;
     width: 100vw;
 
@@ -49,28 +54,51 @@ body:has(#image-showcase.open) {
     overflow: hidden;
 }
 
-
-main {
-    color: var(--background-contrast-color);
-    padding: 18px;
+header {
+    align-items: center;
+    background-color: var(--header-color);
+    box-shadow: 0 0 1rem black;
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 20;
 }
 
-h1 {
+header h1 {
     color: var(--title-color);
-    font-family: Send flowers;
-    font-size: 5rem;
+    cursor: pointer;
+    /* font-family: 'Send Flowers'; */
+    font-size: 2rem;
     margin: 0;
     text-align: center;
 }
 
-#status {
-    opacity: 0.6;
+header a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+}
+
+header img {
+    height: 1.5rem;
+    opacity: 0.75;
+}
+
+header img:hover {
+    opacity: 1;
 }
 
 #status {
     font-size: 0.9rem;
-    margin-top: 6px;
     opacity: 0.8;
+}
+
+main {
+    color: var(--background-contrast-color);
+    padding: 18px;
 }
 
 #items {
@@ -158,15 +186,15 @@ h1 {
 
 #image-showcase {
     align-items: center;
-    backdrop-filter: blur(6px);
-    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.75);
     display: flex;
     inset: 0;
     justify-content: center;
     opacity: 0;
     pointer-events: none;
     position: fixed;
-    -webkit-backdrop-filter: blur(6px);
+    /* -webkit-backdrop-filter: blur(6px); */
     z-index: 1000;
 }
 

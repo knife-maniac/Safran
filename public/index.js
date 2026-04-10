@@ -119,9 +119,9 @@ async function load() {
 
         // Parse the JSON response
         const { items, fetchedAt } = await res.json();
-        status.textContent = `Loaded ${items.length} items`;
+        status.textContent = '';
         if (fetchedAt && fetchedEl) {
-            fetchedEl.textContent = `Fetched ${timeAgo(fetchedAt)}`;
+            fetchedEl.textContent = `Updated ${timeAgo(fetchedAt)}`;
         } else if (fetchedEl) {
             fetchedEl.textContent = '';
         }
