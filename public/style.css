@@ -44,6 +44,12 @@ body {
     background: var(--main-background-color);
 }
 
+/* Disable scrolling when image showcase is open */
+body:has(#image-showcase.open) {
+    overflow: hidden;
+}
+
+
 main {
     color: var(--background-contrast-color);
     padding: 18px;
