@@ -6,7 +6,8 @@
   "author": "Ruben Quast",
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "@rowanmanning/feed-parser": "^2.1.3",
