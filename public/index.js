@@ -24,12 +24,15 @@ function createItemElement(item) {
     header.className = 'item-header';
 
     // Feed icon (small)
-    const icon = document.createElement('img');
+    let icon = document.createElement('img');
     icon.className = 'feed-icon';
     icon.src = item.feedIcon;
     icon.alt = item.feedTitle ? `${item.feedTitle} icon` : 'Feed icon';
-    icon.onerror = () => { icon.onerror = null; };
     header.appendChild(icon);
+    icon.onerror = () => {
+        icon.onerror = null;
+        header.removeChild(icon);
+    };
 
     // Feed title
     const feedTitle = document.createElement('span');

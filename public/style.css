@@ -57,7 +57,7 @@ body:has(#image-showcase.open) {
 header {
     align-items: center;
     background-color: var(--header-color);
-    box-shadow: 0 0 1rem black;
+    box-shadow: 0 0.3rem 1.2rem rgba(0, 0, 0, 30%);
     display: flex;
     gap: 1rem;
     padding: 0.5rem 1rem;
