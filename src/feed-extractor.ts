@@ -79,7 +79,7 @@ export async function extract(feeds: IFeedConfiguration[]): Promise<IItem[]> {
     await Promise.all(feeds.map(async feed => {
         try {
             // Checks custom extractor first, then defaults to RSS extractor
-            const feedItems = await (feed.extractor || extractFromRSS)(feed);
+            const feedItems = await extractFromRSS(feed);
             items.push(...feedItems);
         } catch (err) {
             console.warn(`Failed to fetch feed '${feed.name}' (${feed.url}) : ${err}`);

@@ -1,9 +1,7 @@
-import { IItem } from './feed-extractor.js';
 export interface IFeedConfiguration {
     url: string;
     name?: string;
     limitNumberTo?: number;
-    extractor?: (feedConfiguration: IFeedConfiguration) => Promise<IItem[]>
 }
 
 export const FEEDS: IFeedConfiguration[] = [
