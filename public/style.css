@@ -33,11 +33,6 @@ body[data-theme=dark] {
     src: url(./Montserrat.ttf);
 }
 
-@font-face {
-    font-family: 'Abril Fatface';
-    src: url(./Montserrat.ttf);
-}
-
 
 body {
     font-family: 'Roboto Mono';
@@ -68,7 +63,7 @@ header {
 header h1 {
     color: var(--title-color);
     cursor: pointer;
-    /* font-family: 'Send Flowers'; */
+    font-family: 'Montserrat';
     font-size: 2rem;
     margin: 0;
     text-align: center;
