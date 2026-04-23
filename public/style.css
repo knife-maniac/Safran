@@ -2,21 +2,20 @@ body {
     --title-color: red;
     --main-background-color: #f7f7f8;
     --main-background-contrast-color: #111;
-
     --background-color: #fff;
     --background-contrast-color: #333;
     --link-color: #0070f3;
 }
 
 body[data-theme=dark] {
-    --header-color: #000000;
-    --title-color: #ff9d47;
-    --main-background-color: #18181b;
+    --header-color: #18181b;
+    --title-color: #ffffff;
+    --border-color: #5e6b84;
+    --main-background-color: #000000;
     --main-background-contrast-color: #ffffff;
-
-    --background-color: #0e0d10;
+    --background-color: #000000;
     --background-contrast-color: #9f9fa9;
-    --link-color: var(--title-color);
+    --link-color: #0070f3;
 }
 
 @font-face {
@@ -101,6 +100,16 @@ main {
     padding: 18px;
 }
 
+@media (max-width:600px) {
+    main {
+        padding: 18px 0;
+    }
+
+    #status, #fetched {
+        margin-left: 18px;
+    }
+}
+
 #items {
     column-gap: 2rem;
     display: grid;
@@ -115,6 +124,7 @@ main {
 
 .item {
     background: var(--background-color);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     box-shadow: 0.3rem 0.3rem 1.2rem rgba(0, 0, 0, 30%);
     display: flex;
