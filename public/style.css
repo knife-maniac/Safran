@@ -35,12 +35,15 @@ body[data-theme=dark] {
 
 
 body {
+    background: var(--main-background-color);
     font-family: 'Roboto Mono';
     margin: 0;
     padding: 0;
     width: 100vw;
+}
 
-    background: var(--main-background-color);
+img, h1 {
+    user-select: none;
 }
 
 /* Disable scrolling when image showcase is open */
@@ -69,7 +72,15 @@ header h1 {
     text-align: center;
 }
 
-header a {
+header a.title {
+    text-decoration: none;
+}
+
+header a.title:hover h1 {
+    color: var(--link-color);
+}
+
+header a.icon {
     display: flex;
     align-items: center;
     justify-content: center;
