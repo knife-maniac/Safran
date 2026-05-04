@@ -26,7 +26,7 @@ architecture-beta
 npm install
 ```
 
-2. Configure RSS feeds in file `src/feed-configuration`.
+2. Configure RSS feeds in file `src/feed-configuration.ts`.
 
 3. Add a '.env' file at the root, with FTP deployment configuration:
 ```bash

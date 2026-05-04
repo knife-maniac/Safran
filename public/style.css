@@ -15,7 +15,9 @@ body[data-theme=dark] {
     --main-background-contrast-color: #ffffff;
     --background-color: #000000;
     --background-contrast-color: #9f9fa9;
+    --background-contrast-filter: brightness(0) saturate(100%) invert(71%) sepia(9%) saturate(228%) hue-rotate(201deg) brightness(89%) contrast(86%);
     --accent-color: #ff9933;
+    --accent-filter: brightness(0) saturate(100%) invert(79%) sepia(52%) saturate(3220%) hue-rotate(331deg) brightness(99%) contrast(108%);
     --link-color: #0070f3;
 }
 
@@ -74,10 +76,11 @@ header h1 {
 }
 
 header h1 #dot {
-color: var(--accent-color);
+    color: var(--accent-color);
 }
 
 header a.title {
+    margin-right: auto;
     text-decoration: none;
 }
 
@@ -89,7 +92,6 @@ header a.icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
 }
 
 header img {
@@ -148,7 +150,17 @@ main {
     padding: 0rem 1rem;
 }
 
-.item .item-header {
+.item .item-header .feed-home-link {
+    cursor: pointer;
+}
+
+.item .item-header .feed-home-link:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--main-background-contrast-color);
+}
+
+.item .item-header,
+.item .item-header .feed-home-link {
     align-items: center;
     display: flex;
     gap: 0.5rem;
@@ -159,9 +171,23 @@ main {
     height: 1.5rem;
 }
 
+.item .item-header .feed-source-icon {
+    background-image: url(./images/rss.svg);
+    background-size: cover;
+    margin-left: auto;
+    filter: var(--background-contrast-filter);
+    opacity: 0.5;
+}
+
+.item .item-header .feed-source-icon:hover {
+    opacity: 1;
+    filter: var(--accent-filter);
+}
+
 .item .item-header .feed-title {
     color: var(--main-background-contrast-color);
     font-size: 0.9rem;
+    font-weight: normal;
 }
 
 .item .item-header .score-badge {
@@ -202,7 +228,7 @@ main {
 
 .item .item-footer {
     margin-top: auto;
-    opacity: 0.4;
+    opacity: 0.5;
 }
 
 #image-showcase {

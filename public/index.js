@@ -19,26 +19,36 @@ function createItemElement(item) {
     const li = document.createElement('li');
     li.className = 'item';
 
-    // Header div with feed icon, feed title and score
+    // Header div
     const header = document.createElement('div');
     header.className = 'item-header';
+
+    // Feed home link
+    let feedTitleContainer = header;
+    if (item.feedHomeLink !== undefined) {
+        const feedPageLink = document.createElement('a');
+        feedPageLink.className = 'feed-home-link';
+        feedPageLink.href = item.feedHomeLink;
+        header.appendChild(feedPageLink);
+        feedTitleContainer = feedPageLink;
+    }
 
     // Feed icon (small)
     let icon = document.createElement('img');
     icon.className = 'feed-icon';
     icon.src = item.feedIcon;
     icon.alt = item.feedTitle ? `${item.feedTitle} icon` : 'Feed icon';
-    header.appendChild(icon);
+    feedTitleContainer.appendChild(icon);
     icon.onerror = () => {
         icon.onerror = null;
-        header.removeChild(icon);
+        feedTitleContainer.removeChild(icon);
     };
 
     // Feed title
     const feedTitle = document.createElement('span');
     feedTitle.textContent = item.feedTitle || 'Unknown Feed';
     feedTitle.className = 'feed-title';
-    header.appendChild(feedTitle);
+    feedTitleContainer.appendChild(feedTitle);
 
     // Score badge (if score is available)
     if (item.score !== undefined) {
@@ -47,6 +57,17 @@ function createItemElement(item) {
         scoreBadge.className = 'score-badge';
         header.appendChild(scoreBadge);
     }
+
+    // Source icon (small)
+    let sourceIcon = document.createElement('a');
+    sourceIcon.className = 'feed-icon feed-source-icon';
+    sourceIcon.href = item.feedConfiguration.url;
+    sourceIcon.alt = item.feedTitle ? `${item.feedTitle} source icon` : 'Source icon';
+    header.appendChild(sourceIcon);
+    sourceIcon.onerror = () => {
+        sourceIcon.onerror = null;
+        header.removeChild(sourceIcon);
+    };
 
     // Append header to list item
     li.appendChild(header);

@@ -8,7 +8,8 @@ import { IFeedConfiguration } from './feed-configuration.js';
 export type IItem = {
     feedIcon: string | null;
     feedTitle: string;
-    feedConfiguration: IFeedConfiguration
+    feedHomeLink: string;
+    feedConfiguration: IFeedConfiguration;
     title: string;
     link: string;
     score?: number;
@@ -63,6 +64,7 @@ async function extractFromRSS(feedConfiguration: IFeedConfiguration): Promise<II
             feedConfiguration,
             feedTitle: feedConfiguration.name ?? feed.title ?? '',
             feedIcon: getFeedIcon(feed, feedConfiguration.url),
+            feedHomeLink: feed.url ?? '',
             title: item.title ?? '',
             link: item.url ?? '',
             description: item.description ?? item.content ?? '',
