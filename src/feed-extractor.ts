@@ -67,7 +67,7 @@ async function extractFromRSS(feedConfiguration: IFeedConfiguration): Promise<II
             link: item.url ?? '',
             description: item.description ?? item.content ?? '',
             image: getImage(item),
-            pubDate: item.published ? new Date(item.published).toISOString() : item.updated ? new Date(item.updated).toISOString(): null
+            pubDate: item.published ? new Date(item.published).toISOString() : item.updated ? new Date(item.updated).toISOString() : null
         };
     });
     return items;
@@ -86,13 +86,5 @@ export async function extract(feeds: IFeedConfiguration[]): Promise<IItem[]> {
             console.warn(`Failed to fetch feed '${feed.name}' (${feed.url}) : ${err}`);
         }
     }));
-
-    // sort by pubDate descending when available
-    items.sort((a, b) => {
-        const ta = a.pubDate ? Date.parse(a.pubDate) : 0;
-        const tb = b.pubDate ? Date.parse(b.pubDate) : 0;
-        return tb - ta;
-    });
-
     return items;
 }

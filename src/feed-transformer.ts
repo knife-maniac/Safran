@@ -20,6 +20,13 @@ export function transform(items: IItem[]): IItem[] {
         //     return acc;
         // }, [] as IItem[])
 
+        // Sort by date
+        .sort((a, b) => {
+            const dateA = a.pubDate ? Date.parse(a.pubDate) : 0;
+            const dateB = b.pubDate ? Date.parse(b.pubDate) : 0;
+            return dateB - dateA;
+        })
+
         // Limit number of items from each feed according to its own configuration
         .reduce((acc, item) => {
             const sourceItems = acc.filter((i) => i.feedTitle === item.feedTitle);
