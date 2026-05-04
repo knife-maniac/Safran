@@ -67,7 +67,7 @@ async function extractFromRSS(feedConfiguration: IFeedConfiguration): Promise<II
             link: item.url ?? '',
             description: item.description ?? item.content ?? '',
             image: getImage(item),
-            pubDate: item.published ? new Date(item.published).toISOString() : null
+            pubDate: item.published ? new Date(item.published).toISOString() : item.updated ? new Date(item.updated).toISOString(): null
         };
     });
     return items;
