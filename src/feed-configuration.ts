@@ -74,5 +74,10 @@ export const FEEDS: IFeedConfiguration[] = [
         name: 'Minas Karamanis',
         url: 'https://ergosphere.blog/atom.xml',
         limitNumberTo: 2
+    },
+    {
+        name: 'マリウス',
+        url: 'https://xn--gckvb8fzb.com/rss',
+        limitNumberTo: 2
     }
 ];
