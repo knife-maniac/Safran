@@ -179,7 +179,8 @@ main {
     opacity: 0.5;
 }
 
-.item .item-header .feed-source-icon:hover {
+.item .item-header .feed-source-icon:hover,
+.item .item-header .feed-source-icon:focus {
     opacity: 1;
     filter: var(--accent-filter);
 }
