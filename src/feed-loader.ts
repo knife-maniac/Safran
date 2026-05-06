@@ -1,20 +1,15 @@
 import 'dotenv/config';
 import { Client } from 'basic-ftp';
 
-import { IItem } from './feed-extractor.js';
+import { IExtractorResult } from './feed-extractor.js';
 
 
-async function saveToFile(items: IItem[]): Promise<string> {
-    // save to local file (include fetch timestamp)
+async function saveToFile(extractorResult: IExtractorResult): Promise<string> {
     const fs = await import('fs/promises');
     const cwd = process.cwd();
     const path = cwd + '/dist/feed.json';
     await fs.mkdir(cwd + '/dist', { recursive: true });
-    const payload = {
-        fetchedAt: new Date().toISOString(),
-        items
-    };
-    await fs.writeFile(path, JSON.stringify(payload, null, 2));
+    await fs.writeFile(path, JSON.stringify(extractorResult, null, 2));
     return path;
 }
 
@@ -42,7 +37,7 @@ async function deployWithFtp(feedPath: string): Promise<void> {
 }
 
 
-export async function load(items: IItem[]) {
-    const filePath = await saveToFile(items);
+export async function load(extractorResult: IExtractorResult) {
+    const filePath = await saveToFile(extractorResult);
     await deployWithFtp(filePath);
 }

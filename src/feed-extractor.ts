@@ -18,6 +18,17 @@ export type IItem = {
     pubDate?: string | null;
 };
 
+export interface IFeedDiagnosis extends IFeedConfiguration {
+    numberOfItemsFetched: number;
+    error?: string;
+}
+
+export type IExtractorResult = {
+    fetchedAt: string,
+    items: IItem[];
+    feeds: IFeedDiagnosis[];
+}
+
 
 function getFeedIcon(feed: Feed, feedUrl: string): string | null {
     let feedIcon = feed?.image?.url ?? null;
@@ -76,17 +87,22 @@ async function extractFromRSS(feedConfiguration: IFeedConfiguration): Promise<II
 }
 
 
-export async function extract(feeds: IFeedConfiguration[]): Promise<IItem[]> {
+export async function extract(feedsConfigurations: IFeedConfiguration[]): Promise<IExtractorResult> {
     const items: IItem[] = [];
-    await Promise.all(feeds.map(async feed => {
+    const feeds: IFeedDiagnosis[] = [];
+    const fetchedAt = new Date().toISOString();
+    await Promise.all(feedsConfigurations.map(async feedConfiguration => {
         try {
-            console.log(`Extracting feed '${feed.name}...'`);
-            const feedItems = await extractFromRSS(feed);
-            console.log(`Extracted ${feedItems.length} items from feed '${feed.name}'`);
+            console.log(`Extracting feed '${feedConfiguration.name}...'`);
+            const feedItems = await extractFromRSS(feedConfiguration);
+            console.log(`Extracted ${feedItems.length} items from feed '${feedConfiguration.name}'`);
             items.push(...feedItems);
+            feeds.push({ ...feedConfiguration, numberOfItemsFetched: feedItems.length });
         } catch (err) {
-            console.warn(`Failed to fetch feed '${feed.name}' (${feed.url}) : ${err}`);
+            const errorMessage = err instanceof Error ? err.message : String(err);
+            console.warn(`Failed to fetch feed '${feedConfiguration.name}' (${feedConfiguration.url}) : ${errorMessage}`);
+            feeds.push({ ...feedConfiguration, numberOfItemsFetched: 0, error: errorMessage });
         }
     }));
-    return items;
+    return { fetchedAt, items, feeds };
 }

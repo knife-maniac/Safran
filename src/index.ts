@@ -6,9 +6,9 @@ import { load } from './feed-loader.js';
 
 (async () => {
     try {
-        const items = await extract(FEEDS);         // Fetch, parse, format and aggregate RSS feeds
-        const transformedItems = transform(items);  // Grade, elect and sort RSS feeds items
-        await load(transformedItems);               // Deploy transformed RSS feeds items via FTP
+        const { fetchedAt, items, feeds } = await extract(FEEDS);  // Fetch, parse, format and aggregate RSS feeds
+        const transformedItems = transform(items);                 // Grade, elect and sort RSS feeds items
+        await load({ fetchedAt, items: transformedItems, feeds }); // Deploy transformed RSS feeds items via FTP
     } catch (err) {
         console.error('Error fetching feeds', err);
     }
