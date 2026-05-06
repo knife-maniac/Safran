@@ -17,7 +17,7 @@ async function load() {
     try {
         // Fetch the feed items from the backend API
         // TODO: Use URL configured in .env file
-        const res = await fetch('/projects/safran/feed.json', { cache: 'no-store' });
+        const res = await fetch('../feed.json', { cache: 'no-store' });
         if (!res.ok) throw new Error(await res.text());
 
         // Parse the JSON response
