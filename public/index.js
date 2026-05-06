@@ -156,7 +156,7 @@ async function load() {
             list.appendChild(li);
         });
     } catch (err) {
-        status.textContent = 'Failed to load feeds';
+        status.textContent = 'Failed to load feed items';
         console.error(err);
     }
 }
