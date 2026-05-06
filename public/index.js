@@ -8,7 +8,7 @@ function createItemElement(item) {
 
     // Feed home link
     let feedTitleContainer = header;
-    if (item.feedHomeLink !== undefined) {
+    if (item.feedHomeLink) {
         const feedPageLink = document.createElement('a');
         feedPageLink.className = 'feed-home-link';
         feedPageLink.href = item.feedHomeLink;
@@ -16,7 +16,7 @@ function createItemElement(item) {
         feedTitleContainer = feedPageLink;
     }
 
-    // Feed icon (small)
+    // Feed icon
     let icon = document.createElement('img');
     icon.className = 'feed-icon';
     icon.src = item.feedIcon;

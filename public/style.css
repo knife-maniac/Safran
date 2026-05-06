@@ -20,6 +20,10 @@ body[data-theme=dark] {
     --main-background-color: #000000;
     --main-background-contrast-color: #ffffff;
     --background-color: #000000;
+    --background-color-success: #0a1a08;
+    --background-color-success-contrast: #7fa87a;
+    --background-color-error: #1a0808;
+    --background-color-error-contrast: #ac8080;
     --background-contrast-color: #9f9fa9;
     --shadow-color: transparent;
     --background-contrast-filter: brightness(0) saturate(100%) invert(71%) sepia(9%) saturate(228%) hue-rotate(201deg) brightness(89%) contrast(86%);
