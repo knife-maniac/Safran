@@ -23,17 +23,17 @@ body[data-theme=dark] {
 
 @font-face {
     font-family: 'Roboto Mono';
-    src: url(./RobotoMono.ttf);
+    src: url(./fonts/RobotoMono.ttf);
 }
 
 @font-face {
     font-family: 'Send Flowers';
-    src: url(./SendFlowers.ttf);
+    src: url(./fonts/SendFlowers.ttf);
 }
 
 @font-face {
     font-family: 'Montserrat';
-    src: url(./Montserrat.ttf);
+    src: url(./fonts/Montserrat.ttf);
 }
 
 
