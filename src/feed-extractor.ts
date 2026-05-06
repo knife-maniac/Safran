@@ -8,7 +8,7 @@ import { IFeedConfiguration } from './feed-configuration.js';
 export type IItem = {
     feedIcon: string | null;
     feedTitle: string;
-    feedHomeLink: string;
+    homeLink: string;
     feedConfiguration: IFeedConfiguration;
     title: string;
     link: string;
@@ -21,6 +21,8 @@ export type IItem = {
 export interface IFeedDiagnosis extends IFeedConfiguration {
     numberOfItemsFetched: number;
     error?: string;
+    homeLink?: string;
+    icon?: string;
 }
 
 export type IExtractorResult = {
@@ -67,15 +69,17 @@ function getImage(item: FeedItem): string | null {
 }
 
 
-async function extractFromRSS(feedConfiguration: IFeedConfiguration): Promise<IItem[]> {
+async function extractFromRSS(feedConfiguration: IFeedConfiguration): Promise<{ items: IItem[], homeLink: string, feedIcon: string }> {
     const response = await fetch(feedConfiguration.url);
     const feed: Feed = parseFeed(await response.text());
+    const homeLink = feed.url ?? '';
+    const feedIcon = getFeedIcon(feed, feedConfiguration.url) ?? '';
     const items: IItem[] = (feed.items).map((item: FeedItem) => {
         return {
             feedConfiguration,
             feedTitle: feedConfiguration.name ?? feed.title ?? '',
-            feedIcon: getFeedIcon(feed, feedConfiguration.url),
-            feedHomeLink: feed.url ?? '',
+            feedIcon,
+            homeLink,
             title: item.title ?? '',
             link: item.url ?? '',
             description: item.description ?? item.content ?? '',
@@ -83,7 +87,7 @@ async function extractFromRSS(feedConfiguration: IFeedConfiguration): Promise<II
             pubDate: item.published ? new Date(item.published).toISOString() : item.updated ? new Date(item.updated).toISOString() : null
         };
     });
-    return items;
+    return { items, homeLink, feedIcon };
 }
 
 
@@ -94,10 +98,10 @@ export async function extract(feedsConfigurations: IFeedConfiguration[]): Promis
     await Promise.all(feedsConfigurations.map(async feedConfiguration => {
         try {
             console.log(`Extracting feed '${feedConfiguration.name}...'`);
-            const feedItems = await extractFromRSS(feedConfiguration);
+            const { items: feedItems, homeLink, feedIcon } = await extractFromRSS(feedConfiguration);
             console.log(`Extracted ${feedItems.length} items from feed '${feedConfiguration.name}'`);
             items.push(...feedItems);
-            feeds.push({ ...feedConfiguration, numberOfItemsFetched: feedItems.length });
+            feeds.push({ ...feedConfiguration, numberOfItemsFetched: feedItems.length, homeLink, icon: feedIcon });
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : String(err);
             console.warn(`Failed to fetch feed '${feedConfiguration.name}' (${feedConfiguration.url}) : ${errorMessage}`);
