@@ -1,0 +1,12 @@
+.item .item-header .feed-source-icon {
+    background-image: url(../images/rss.svg);
+    background-size: cover;
+    margin-left: auto;
+    filter: var(--accent-filter);
+    opacity: 0.5;
+}
+
+.item .item-header .feed-source-icon:hover,
+.item .item-header .feed-source-icon:focus {
+    opacity: 1;
+}

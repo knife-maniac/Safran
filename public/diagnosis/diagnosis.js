@@ -1,6 +1,6 @@
 function createItemElement(feed) {
     const li = document.createElement('li');
-    li.className = 'feed';
+    li.className = 'item';
 
     const status = feed.error || `fetched ${feed.numberOfItemsFetched} items (limitied to ${feed.limitNumberTo})`;
     li.textContent = `feed "${feed.name}" (${feed.url}) : ${status}`
@@ -11,7 +11,7 @@ function createItemElement(feed) {
 
 async function load() {
     const status = document.getElementById('status');
-    const list = document.getElementById('feeds');
+    const list = document.getElementById('items');
     const fetchedEl = document.getElementById('fetched');
 
     try {
@@ -31,7 +31,6 @@ async function load() {
 
         // Create and append list feeds
         feeds.forEach(feed => {
-            console.log(feed);
             const li = createItemElement(feed);
             list.appendChild(li);
         });

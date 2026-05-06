@@ -41,17 +41,6 @@ function createItemElement(item) {
         header.appendChild(scoreBadge);
     }
 
-    // Source icon (small)
-    let sourceIcon = document.createElement('a');
-    sourceIcon.className = 'feed-icon feed-source-icon';
-    sourceIcon.href = item.feedConfiguration.url;
-    sourceIcon.alt = item.feedTitle ? `${item.feedTitle} source icon` : 'Source icon';
-    header.appendChild(sourceIcon);
-    sourceIcon.onerror = () => {
-        sourceIcon.onerror = null;
-        header.removeChild(sourceIcon);
-    };
-
     // Append header to list item
     li.appendChild(header);
 
@@ -121,7 +110,7 @@ async function load() {
     try {
         // Fetch the feed items from the backend API
         // TODO: Use URL configured in .env file
-        const res = await fetch('/projects/54fr4n/feed.json', { cache: 'no-store' });
+        const res = await fetch('/projects/safran/feed.json', { cache: 'no-store' });
         if (!res.ok) throw new Error(await res.text());
 
         // Parse the JSON response

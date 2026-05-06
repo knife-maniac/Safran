@@ -130,6 +130,35 @@ main {
     }
 }
 
+#image-showcase {
+    align-items: center;
+    backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    /* -webkit-backdrop-filter: blur(6px); */
+    z-index: 1000;
+}
+
+#image-showcase.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#image-showcase>img {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    cursor: zoom-out;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    width: auto;
+}
+
 #items {
     column-gap: 2rem;
     display: grid;
@@ -178,20 +207,6 @@ main {
     height: 1.5rem;
 }
 
-.item .item-header .feed-source-icon {
-    background-image: url(./images/rss.svg);
-    background-size: cover;
-    margin-left: auto;
-    filter: var(--background-contrast-filter);
-    opacity: 0.5;
-}
-
-.item .item-header .feed-source-icon:hover,
-.item .item-header .feed-source-icon:focus {
-    opacity: 1;
-    filter: var(--accent-filter);
-}
-
 .item .item-header .feed-title {
     color: var(--main-background-contrast-color);
     font-size: 0.9rem;
@@ -228,8 +243,6 @@ main {
     text-decoration: none;
 }
 
-.item .description {}
-
 .item a:hover {
     text-decoration: underline;
 }
@@ -237,33 +250,4 @@ main {
 .item .item-footer {
     margin-top: auto;
     opacity: 0.5;
-}
-
-#image-showcase {
-    align-items: center;
-    backdrop-filter: blur(3px);
-    background: rgba(0, 0, 0, 0.75);
-    display: flex;
-    inset: 0;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    position: fixed;
-    /* -webkit-backdrop-filter: blur(6px); */
-    z-index: 1000;
-}
-
-#image-showcase.open {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-#image-showcase>img {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-    cursor: zoom-out;
-    height: auto;
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-    width: auto;
 }
