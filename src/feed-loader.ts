@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { Client } from 'basic-ftp';
 
-import { IExtractorResult } from './feed-extractor.js';
+import { IExtractorResult } from './extractor.js';
 
 
 async function saveToFile(extractorResult: IExtractorResult): Promise<string> {
