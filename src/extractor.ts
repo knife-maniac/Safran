@@ -3,14 +3,7 @@ import { FeedItem } from '@rowanmanning/feed-parser/lib/feed/item/base';
 import { parseFeed } from '@rowanmanning/feed-parser';
 
 
-export interface IExtractionStatus {
-    success: boolean;
-    error?: string;
-    numberOfItemsFetched: number;
-}
-
-interface IFeedData {
-    feedUrl: string;
+interface IExtractedFeedData {
     feedTitle: string;
     feedIcon: string | null;
     feedHomeLink: string;
@@ -27,8 +20,8 @@ export type IExtractedItem = {
 };
 
 export interface IFeedExtractionResult {
-    extractionStatus: IExtractionStatus;
-    feedData?: IFeedData;
+    error?: string;
+    feedData?: IExtractedFeedData;
     feedItems?: IExtractedItem[];
 }
 
@@ -73,8 +66,7 @@ export async function extractFromRSS(url: string): Promise<IFeedExtractionResult
     try {
         const response = await fetch(url);
         const parsedFeed: ParsedFeed = parseFeed(await response.text());
-        const feedData: IFeedData = {
-            feedUrl: url,
+        const feedData: IExtractedFeedData = {
             feedTitle: parsedFeed.title ?? '',
             feedIcon: getFeedIcon(parsedFeed, url) ?? '',
             feedHomeLink: parsedFeed.url ?? url ?? ''
@@ -88,17 +80,8 @@ export async function extractFromRSS(url: string): Promise<IFeedExtractionResult
                 pubDate: item.published ? new Date(item.published).toISOString() : item.updated ? new Date(item.updated).toISOString() : null
             };
         });
-        const extractionStatus: IExtractionStatus = {
-            success: true,
-            numberOfItemsFetched: feedItems.length
-        }
-        return { extractionStatus, feedData, feedItems };
+        return { feedData, feedItems };
     } catch (error) {
-        const extractionStatus: IExtractionStatus = {
-            success: false,
-            error: error instanceof Error ? error.message : String(error),
-            numberOfItemsFetched: 0
-        }
-        return { extractionStatus };
+        return { error: error instanceof Error ? error.message : String(error), };
     }
 }
