@@ -3,28 +3,33 @@ import { FeedItem } from '@rowanmanning/feed-parser/lib/feed/item/base';
 import { parseFeed } from '@rowanmanning/feed-parser';
 
 
-export type IExtractedItem = {
-    feedUrl: string,
-    category?: string,
-    title: string,
-    link: string,
-    pubDate: string | null,
-    description?: string,
-    image?: string | null,
-    score?: number
-};
-
 export interface IExtractionStatus {
-    feedIcon: string | null,
-    feedTitle: string,
-    feedHomeLink: string,
-    numberOfItemsFetched: number,
-    error?: string
+    success: boolean;
+    error?: string;
+    numberOfItemsFetched: number;
 }
 
-export interface IExtractorResult {
-    feedsStatus: IExtractionStatus[]
-    items: IExtractedItem[],
+interface IFeedData {
+    feedUrl: string;
+    feedTitle: string;
+    feedIcon: string | null;
+    feedHomeLink: string;
+};
+
+export type IExtractedItem = {
+    category?: string;
+    title: string;
+    link: string;
+    pubDate: string | null;
+    description?: string;
+    image?: string | null;
+    score?: number;
+};
+
+export interface IFeedExtractionResult {
+    extractionStatus: IExtractionStatus;
+    feedData?: IFeedData;
+    feedItems?: IExtractedItem[];
 }
 
 
@@ -64,26 +69,36 @@ function getImage(item: FeedItem): string | null {
 }
 
 
-export async function extractFromRSS(url: string): Promise<{ items: IExtractedItem[], status: IExtractionStatus }> {
-    const response = await fetch(url);
-    const parsedFeed: ParsedFeed = parseFeed(await response.text());
-    const items: IExtractedItem[] = (parsedFeed.items).map((item: FeedItem) => {
-        return {
+export async function extractFromRSS(url: string): Promise<IFeedExtractionResult> {
+    try {
+        const response = await fetch(url);
+        const parsedFeed: ParsedFeed = parseFeed(await response.text());
+        const feedData: IFeedData = {
             feedUrl: url,
-            title: item.title ?? '',
-            link: item.url ?? '',
-            description: item.description ?? item.content ?? '',
-            image: getImage(item),
-            pubDate: item.published ? new Date(item.published).toISOString() : item.updated ? new Date(item.updated).toISOString() : null
-        };
-    });
-    const feedIcon = getFeedIcon(parsedFeed, url) ?? '';
-    const feedHomeLink = url ?? '';
-    const status: IExtractionStatus = {
-        feedIcon,
-        feedTitle: parsedFeed.title ?? '',
-        feedHomeLink,
-        numberOfItemsFetched: items.length
+            feedTitle: parsedFeed.title ?? '',
+            feedIcon: getFeedIcon(parsedFeed, url) ?? '',
+            feedHomeLink: parsedFeed.url ?? url ?? ''
+        }
+        const feedItems: IExtractedItem[] = (parsedFeed.items).map((item: FeedItem) => {
+            return {
+                title: item.title ?? '',
+                link: item.url ?? '',
+                description: item.description ?? item.content ?? '',
+                image: getImage(item),
+                pubDate: item.published ? new Date(item.published).toISOString() : item.updated ? new Date(item.updated).toISOString() : null
+            };
+        });
+        const extractionStatus: IExtractionStatus = {
+            success: true,
+            numberOfItemsFetched: feedItems.length
+        }
+        return { extractionStatus, feedData, feedItems };
+    } catch (error) {
+        const extractionStatus: IExtractionStatus = {
+            success: false,
+            error: error instanceof Error ? error.message : String(error),
+            numberOfItemsFetched: 0
+        }
+        return { extractionStatus };
     }
-    return { items, status };
 }
