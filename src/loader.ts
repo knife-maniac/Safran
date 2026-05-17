@@ -1,6 +1,6 @@
-import 'dotenv/config';
-
 import { Client } from 'basic-ftp';
+
+import 'dotenv/config';
 
 
 async function saveToFile(content: string): Promise<string> {
@@ -8,7 +8,7 @@ async function saveToFile(content: string): Promise<string> {
     const cwd = process.cwd();
     const path = cwd + '/dist/feed.json';
     await fs.mkdir(cwd + '/dist', { recursive: true });
-    await fs.writeFile(path, JSON.stringify(content, null, 2));
+    await fs.writeFile(path, content);
     return path;
 }
 

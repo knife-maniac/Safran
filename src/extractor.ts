@@ -5,7 +5,7 @@ import { parseFeed } from '@rowanmanning/feed-parser';
 import { IFeedConfiguration } from './configuration';
 
 
-interface IExtractedFeedData {
+export interface IExtractedFeedData {
     feedTitle: string;
     feedIcon: string | null;
     feedHomeLink: string;
