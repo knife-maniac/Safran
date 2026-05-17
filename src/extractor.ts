@@ -2,6 +2,8 @@ import { Feed as ParsedFeed } from '@rowanmanning/feed-parser/lib/feed/base';
 import { FeedItem } from '@rowanmanning/feed-parser/lib/feed/item/base';
 import { parseFeed } from '@rowanmanning/feed-parser';
 
+import { IFeedConfiguration } from './configuration';
+
 
 interface IExtractedFeedData {
     feedTitle: string;
@@ -23,6 +25,13 @@ export interface IFeedExtractionResult {
     error?: string;
     feedData?: IExtractedFeedData;
     feedItems?: IExtractedItem[];
+}
+
+export interface IExtractionResult {
+    error?: string;
+    fetchedAt: string;
+    timeToFetchInMs: number;
+    result: IFeedExtractionResult[];
 }
 
 
@@ -84,4 +93,25 @@ export async function extractFromRSS(url: string): Promise<IFeedExtractionResult
     } catch (error) {
         return { error: error instanceof Error ? error.message : String(error), };
     }
+}
+
+export async function extract(feeds: IFeedConfiguration[]): Promise<IExtractionResult> {
+    const result: IFeedExtractionResult[] = [];
+    const fetchedAt = new Date().toISOString();
+    const startTime = Date.now(); // Time how long it takes to extract all feeds
+    await Promise.all(feeds.map(async feed => {
+        console.log(`Extracting feed '${feed.name}...'`);
+        const { error, feedData, feedItems } = await extractFromRSS(feed.url);
+        //TODO: Merge feed info from config and from extraction
+        if (error) {
+            result.push({ error: `Failed to fetch feed '${feed.name}' (${feed.url}) : ${error}` });
+            console.warn(`Failed to fetch feed '${feed.name}' (${feed.url}) : ${error}`);
+        } else if (feedData && feedItems) {
+            result.push({ feedData, feedItems });
+            console.log(`Extracted ${feedItems.length} items from feed '${feed.name}'`);
+        }
+    }));
+    const endTime = Date.now();
+    const timeToFetchInMs = endTime - startTime;
+    return { result, fetchedAt, timeToFetchInMs };
 }

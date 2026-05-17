@@ -3,12 +3,12 @@ import { IRules } from './rules';
 
 export interface IAppConfiguration {
     name: string,
-    feeds: IFeed[],
+    feeds: IFeedConfiguration[],
     categories?: IFeedCategory[],
     rules?: IRules
 }
 
-interface IFeed {
+export interface IFeedConfiguration {
     url: string,
     name?: string,
     categoryName?: string,
