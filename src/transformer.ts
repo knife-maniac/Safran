@@ -1,4 +1,5 @@
-import { IExtractedItem } from './extractor.js';
+import { IAppConfiguration } from './configuration.js';
+import { IExtractedFeedData, IExtractedItem, IExtractionResult, IFeedExtractionResult } from './extractor.js';
 
 
 export interface IRules {
@@ -7,7 +8,12 @@ export interface IRules {
     removeItemsWithTitleIncluding?: string[]
 }
 
-export function apply(items: IExtractedItem[], rules?: IRules): IExtractedItem[] {
+interface ITransformationResult {
+    items: IExtractedItem[];
+    feeds: IExtractedFeedData[];
+}
+
+function apply(items: IExtractedItem[], rules?: IRules): IExtractedItem[] {
     // Always sort items by date (newest first)
     items.sort((a, b) => {
         if (!a.pubDate || !b.pubDate) {
@@ -53,4 +59,27 @@ export function apply(items: IExtractedItem[], rules?: IRules): IExtractedItem[]
     }
 
     return items;
+}
+
+
+export function transform(extractedFeeds: IFeedExtractionResult[], config: IAppConfiguration): ITransformationResult {
+    let feeds: IExtractedFeedData[] = [];
+    let items: IExtractedItem[] = [];
+
+    extractedFeeds.forEach(({ error, feedData, feedItems }) => {
+        if (error || !feedData || !feedItems) {
+            console.error(`Error extracting feed '${feedData?.feedTitle || 'Unknown'}':`, error);
+        } else {
+            feeds.push(feedData);
+            items.push(...apply(feedItems,)); // Apply feed-specific rules to items
+        }
+    });
+
+    // TODO: Group by categories
+    // TODO: Apply category-specific rules to items
+
+    // Apply global rules to items
+    items = apply(items, config.rules);
+
+    return { items, feeds };
 }

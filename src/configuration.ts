@@ -1,4 +1,4 @@
-import { IRules } from './rules';
+import { IRules } from './transformer';
 
 
 export interface IAppConfiguration {
