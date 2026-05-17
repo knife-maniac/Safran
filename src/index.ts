@@ -1,15 +1,12 @@
-import { FEEDS } from './feed-configuration.js';
-import { extract } from './feed-extractor.js';
-import { transform } from './feed-transformer.js';
-import { load } from './feed-loader.js';
+import { CONFIG } from './configuration.js';
+import { extract } from './extractor.js';
+import { transform } from './transformer.js';
+import { load } from './loader.js';
 
 
-(async () => {
-    try {
-        const { fetchedAt, items, feeds } = await extract(FEEDS);  // Fetch, parse, format and aggregate RSS feeds
-        const transformedItems = transform(items);                 // Grade, elect and sort RSS feeds items
-        await load({ fetchedAt, items: transformedItems, feeds }); // Deploy transformed RSS feeds items via FTP
-    } catch (err) {
-        console.error('Error fetching feeds', err);
-    }
-})();
+async function main() {
+    const { data, fetchedAt, timeToFetchInMs } = await extract(CONFIG.feeds);    // Extract
+    const { feeds, items } = transform(data, CONFIG);                            // Transform
+    load(JSON.stringify({ fetchedAt, timeToFetchInMs, items, feeds }, null, 2)); // Load
+};
+main();
