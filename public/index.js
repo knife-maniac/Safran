@@ -1,4 +1,4 @@
-function createItemElement(item) {
+function createItemElement(item, feedData) {
     const li = document.createElement('li');
     li.className = 'item';
 
@@ -8,10 +8,10 @@ function createItemElement(item) {
 
     // Feed home link
     let feedTitleContainer = header;
-    if (item.feedHomeLink) {
+    if (feedData.feedHomeLink) {
         const feedPageLink = document.createElement('a');
         feedPageLink.className = 'feed-home-link';
-        feedPageLink.href = item.feedHomeLink;
+        feedPageLink.href = feedData.feedHomeLink;
         header.appendChild(feedPageLink);
         feedTitleContainer = feedPageLink;
     }
@@ -19,8 +19,8 @@ function createItemElement(item) {
     // Feed icon
     let icon = document.createElement('img');
     icon.className = 'feed-icon';
-    icon.src = item.feedIcon;
-    icon.alt = item.feedTitle ? `${item.feedTitle} icon` : 'Feed icon';
+    icon.src = feedData.feedIcon;
+    icon.alt = feedData.feedTitle ? `${feedData.feedTitle} icon` : 'Feed icon';
     feedTitleContainer.appendChild(icon);
     icon.onerror = () => {
         icon.onerror = null;
@@ -29,7 +29,7 @@ function createItemElement(item) {
 
     // Feed title
     const feedTitle = document.createElement('span');
-    feedTitle.textContent = item.feedTitle || 'Unknown Feed';
+    feedTitle.textContent = feedData.feedTitle || 'Unknown Feed';
     feedTitle.className = 'feed-title';
     feedTitleContainer.appendChild(feedTitle);
 
@@ -114,7 +114,7 @@ async function load() {
         if (!res.ok) throw new Error(await res.text());
 
         // Parse the JSON response
-        const { items, fetchedAt } = await res.json();
+        const { fetchedAt, items, feeds } = await res.json();
         status.textContent = '';
         if (fetchedAt && fetchedEl) {
             fetchedEl.textContent = `Updated ${timeAgo(fetchedAt)}`;
@@ -123,8 +123,9 @@ async function load() {
         }
 
         // Create and append list items for each feed item
-        items.forEach(it => {
-            const li = createItemElement(it);
+        items.forEach(item => {
+            const feed = feeds.find(f => f.feedData.url === item.feedUrl);
+            const li = createItemElement(item, feed.feedData);
             list.appendChild(li);
         });
     } catch (err) {
