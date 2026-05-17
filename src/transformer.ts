@@ -1,5 +1,5 @@
 import { IAppConfiguration } from './configuration.js';
-import { IExtractedFeedData, IExtractedItem, IExtractionResult, IFeedExtractionResult } from './extractor.js';
+import { IFeedExtractionResult, IExtractedFeedData, IExtractedItem } from './extractor.js';
 
 
 export interface IRules {
@@ -8,9 +8,14 @@ export interface IRules {
     removeItemsWithTitleIncluding?: string[]
 }
 
+interface IFeedTransformationResult {
+    error?: string;
+    feedData?: IExtractedFeedData;
+}
+
 interface ITransformationResult {
     items: IExtractedItem[];
-    feeds: IExtractedFeedData[];
+    feeds: IFeedTransformationResult[];
 }
 
 function apply(items: IExtractedItem[], rules?: IRules): IExtractedItem[] {
@@ -63,15 +68,16 @@ function apply(items: IExtractedItem[], rules?: IRules): IExtractedItem[] {
 
 
 export function transform(extractedFeeds: IFeedExtractionResult[], config: IAppConfiguration): ITransformationResult {
-    let feeds: IExtractedFeedData[] = [];
+    let feeds: IFeedTransformationResult[] = [];
     let items: IExtractedItem[] = [];
 
-    extractedFeeds.forEach(({ error, feedData, feedItems }) => {
+    extractedFeeds.forEach(({ feedData, error, feedItems }) => {
         if (error || !feedData || !feedItems) {
-            console.error(`Error extracting feed '${feedData?.feedTitle || 'Unknown'}':`, error);
+            console.error(`Error extracting feed '${feedData?.url || 'Unknown URL'}':`, error);
+            feeds.push({ error: error || 'Unknown error', feedData });
         } else {
-            feeds.push(feedData);
-            items.push(...apply(feedItems,)); // Apply feed-specific rules to items
+            feeds.push({ feedData });
+            items.push(...apply(feedItems, config.rules)); // Apply feed-specific rules to items
         }
     });
 

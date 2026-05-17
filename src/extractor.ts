@@ -5,13 +5,14 @@ import { parseFeed } from '@rowanmanning/feed-parser';
 import { IFeedConfiguration } from './configuration';
 
 
-export interface IExtractedFeedData {
-    feedTitle: string;
-    feedIcon: string | null;
-    feedHomeLink: string;
+export interface IExtractedFeedData extends IFeedConfiguration {
+    feedTitle?: string;
+    feedIcon?: string | null;
+    feedHomeLink?: string;
 };
 
 export type IExtractedItem = {
+    feedUrl: string;
     category?: string;
     title: string;
     link: string;
@@ -28,10 +29,9 @@ export interface IFeedExtractionResult {
 }
 
 export interface IExtractionResult {
-    error?: string;
     fetchedAt: string;
     timeToFetchInMs: number;
-    result: IFeedExtractionResult[];
+    data: IFeedExtractionResult[];
 }
 
 
@@ -71,17 +71,19 @@ function getImage(item: FeedItem): string | null {
 }
 
 
-export async function extractFromRSS(url: string): Promise<IFeedExtractionResult> {
+export async function extractFeed(feed: IFeedConfiguration): Promise<IFeedExtractionResult> {
     try {
-        const response = await fetch(url);
+        const response = await fetch(feed.url);
         const parsedFeed: ParsedFeed = parseFeed(await response.text());
         const feedData: IExtractedFeedData = {
+            ...feed,
             feedTitle: parsedFeed.title ?? '',
-            feedIcon: getFeedIcon(parsedFeed, url) ?? '',
-            feedHomeLink: parsedFeed.url ?? url ?? ''
+            feedIcon: getFeedIcon(parsedFeed, feed.url) ?? '',
+            feedHomeLink: parsedFeed.url ?? feed.url ?? ''
         }
         const feedItems: IExtractedItem[] = (parsedFeed.items).map((item: FeedItem) => {
             return {
+                feedUrl: feed.url,
                 title: item.title ?? '',
                 link: item.url ?? '',
                 description: item.description ?? item.content ?? '',
@@ -91,27 +93,27 @@ export async function extractFromRSS(url: string): Promise<IFeedExtractionResult
         });
         return { feedData, feedItems };
     } catch (error) {
-        return { error: error instanceof Error ? error.message : String(error), };
+        return { feedData: { ...feed }, error: error instanceof Error ? error.message : String(error) };
     }
 }
 
 export async function extract(feeds: IFeedConfiguration[]): Promise<IExtractionResult> {
-    const result: IFeedExtractionResult[] = [];
+    const data: IFeedExtractionResult[] = [];
     const fetchedAt = new Date().toISOString();
     const startTime = Date.now(); // Time how long it takes to extract all feeds
     await Promise.all(feeds.map(async feed => {
         console.log(`Extracting feed '${feed.name}...'`);
-        const { error, feedData, feedItems } = await extractFromRSS(feed.url);
+        const { error,feedData, feedItems } = await extractFeed(feed);
         //TODO: Merge feed info from config and from extraction
-        if (error) {
-            result.push({ error: `Failed to fetch feed '${feed.name}' (${feed.url}) : ${error}` });
+        if (error || feedItems === undefined) {
+            data.push({ feedData, error: `Failed to fetch feed '${feed.name}' (${feed.url}) : ${error || 'Unknown error'}` });
             console.warn(`Failed to fetch feed '${feed.name}' (${feed.url}) : ${error}`);
-        } else if (feedData && feedItems) {
-            result.push({ feedData, feedItems });
+        } else if (feedItems) {
+            data.push({ feedData, feedItems });
             console.log(`Extracted ${feedItems.length} items from feed '${feed.name}'`);
         }
     }));
     const endTime = Date.now();
     const timeToFetchInMs = endTime - startTime;
-    return { result, fetchedAt, timeToFetchInMs };
+    return { data, fetchedAt, timeToFetchInMs };
 }
