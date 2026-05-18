@@ -5,8 +5,19 @@ import { load } from './loader.js';
 
 
 async function main() {
-    const { data, fetchedAt, timeToFetchInMs } = await extract(CONFIG.feeds);    // Extract
-    const { feeds, items } = transform(data, CONFIG);                            // Transform
-    load(JSON.stringify({ fetchedAt, timeToFetchInMs, items, feeds }, null, 2)); // Load
+    // Extract
+    const { data, fetchedAt, timeToFetchInMs } = await extract(CONFIG.feeds);
+
+    // Transform
+    const { feeds, items } = transform(data, CONFIG);
+
+    // Load
+    load(JSON.stringify({
+        fetchedAt,
+        timeToFetchInMs,
+        categories: CONFIG.categories,
+        items,
+        feeds
+    }, null, 2));
 };
 main();
