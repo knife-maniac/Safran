@@ -2,6 +2,7 @@ import { Client } from 'basic-ftp';
 
 import dotenv from 'dotenv';
 import fs from 'fs';
+import { Readable } from 'stream';
 import path from 'path';
 
 
@@ -36,9 +37,22 @@ async function uploadDirectory(client: Client, localDir: string, remoteDir: stri
                 // recurse into child directory (remote child is entry.name relative to current)
                 await uploadDirectory(client, localPath, entry.name);
             } else if (entry.isFile()) {
-                console.log(`Uploading ${localPath} -> ${path.posix.join(remoteDir, entry.name)}`);
-                // upload file using basename while in the target remote dir
-                await client.uploadFrom(localPath, entry.name);
+                const remotePath = path.posix.join(remoteDir, entry.name);
+                console.log(`Uploading ${localPath} -> ${remotePath}`);
+
+                // If this is an HTML file, read it, replace {TIMESTAMP}, and upload the modified contents.
+                if (/\.html?$/i.test(entry.name)) {
+                    const content = await fs.promises.readFile(localPath, 'utf8');
+                    const timestamp = new Date().toISOString();
+                    const replaced = content.split('{TIMESTAMP}').join(timestamp);
+                    // uploadFrom accepts a Readable stream; create one from the replaced string
+                    console.log('REPLACED:', replaced);
+                    const stream = Readable.from([Buffer.from(replaced, 'utf8')]);
+                    await client.uploadFrom(stream, entry.name);
+                } else {
+                    // upload file using basename while in the target remote dir
+                    await client.uploadFrom(localPath, entry.name);
+                }
             }
         }
     } finally {
