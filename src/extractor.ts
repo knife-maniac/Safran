@@ -104,7 +104,6 @@ export async function extract(feeds: IFeedConfiguration[]): Promise<IExtractionR
     await Promise.all(feeds.map(async feed => {
         console.log(`Extracting feed '${feed.name}...'`);
         const { error,feedData, feedItems } = await extractFeed(feed);
-        //TODO: Merge feed info from config and from extraction
         if (error || feedItems === undefined) {
             data.push({ feedData, error: `Failed to fetch feed '${feed.name}' (${feed.url}) : ${error || 'Unknown error'}` });
             console.warn(`Failed to fetch feed '${feed.name}' (${feed.url}) : ${error}`);
