@@ -82,6 +82,15 @@ async function load() {
             fetchedEl.textContent = '';
         }
 
+        // Sort feeds: errors first, then by feed name
+        feeds.sort((a, b) => {
+            if (a.error && !b.error) return -1;
+            if (!a.error && b.error) return 1;
+            const nameA = a.feedData?.name || a.feedData?.url || '';
+            const nameB = b.feedData?.name || b.feedData?.url || '';
+            return nameA.localeCompare(nameB);
+        });
+
         // Create and append list feeds
         feeds.forEach(({ error, feedData }) => {
             const li = createFeedElement(feedData, error);
