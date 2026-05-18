@@ -23,6 +23,22 @@ if (!FTP_HOST || !FTP_USER) {
 
 const publicDir = path.resolve(process.cwd(), 'public');
 
+async function uploadFile(client: Client, localPath: string, remotePath: string, entryName: string) {
+    // If this is an HTML file, read it, replace {TIMESTAMP}, and upload the modified contents.    
+    if (/\.html?$/i.test(entryName)) {
+        const content = await fs.promises.readFile(localPath, 'utf8');
+        const timestamp = new Date().toISOString();
+        const replaced = content.split('{TIMESTAMP}').join(timestamp);
+        console.log('REPLACING {TIMESTAMP} in', entryName, 'with', timestamp);
+        // uploadFrom accepts a Readable stream; create one from the replaced string
+        const stream = Readable.from([Buffer.from(replaced, 'utf8')]);
+        await client.uploadFrom(stream, entryName);
+    } else {
+        // upload file using basename while in the target remote dir
+        await client.uploadFrom(localPath, entryName);
+    }
+}
+
 async function uploadDirectory(client: Client, localDir: string, remoteDir: string) {
     const entries = await fs.promises.readdir(localDir, { withFileTypes: true });
 
@@ -39,20 +55,7 @@ async function uploadDirectory(client: Client, localDir: string, remoteDir: stri
             } else if (entry.isFile()) {
                 const remotePath = path.posix.join(remoteDir, entry.name);
                 console.log(`Uploading ${localPath} -> ${remotePath}`);
-
-                // If this is an HTML file, read it, replace {TIMESTAMP}, and upload the modified contents.
-                if (/\.html?$/i.test(entry.name)) {
-                    const content = await fs.promises.readFile(localPath, 'utf8');
-                    const timestamp = new Date().toISOString();
-                    const replaced = content.split('{TIMESTAMP}').join(timestamp);
-                    // uploadFrom accepts a Readable stream; create one from the replaced string
-                    console.log('REPLACED:', replaced);
-                    const stream = Readable.from([Buffer.from(replaced, 'utf8')]);
-                    await client.uploadFrom(stream, entry.name);
-                } else {
-                    // upload file using basename while in the target remote dir
-                    await client.uploadFrom(localPath, entry.name);
-                }
+                await uploadFile(client, localPath, remotePath, entry.name);
             }
         }
     } finally {
@@ -84,8 +87,9 @@ async function main() {
             if (entry.isDirectory()) {
                 await uploadDirectory(client, localPath, entry.name);
             } else if (entry.isFile()) {
-                console.log(`Uploading ${localPath} -> ${path.posix.join(FTP_PATH, entry.name)}`);
-                await client.uploadFrom(localPath, entry.name);
+                const remotePath = path.posix.join(FTP_PATH, entry.name);
+                console.log(`Uploading ${localPath} -> ${remotePath}`);
+                await uploadFile(client, localPath, remotePath, entry.name);
             }
         }
 
