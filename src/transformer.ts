@@ -77,7 +77,7 @@ export function transform(extractedFeeds: IFeedExtractionResult[], config: IAppC
             feeds.push({ error: error || 'Unknown error', feedData });
         } else {
             feeds.push({ feedData });
-            items.push(...apply(feedItems, config.rules)); // Apply feed-specific rules to items
+            items.push(...apply(feedItems, feedData.rules)); // Apply feed-specific rules to items
         }
     });
 
