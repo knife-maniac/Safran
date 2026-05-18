@@ -255,3 +255,20 @@ main {
     margin-top: auto;
     opacity: 0.5;
 }
+
+.item .categories-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.item .category-tag {
+    border: 0.1rem solid var(--accent-color);
+    border-radius: 0.5rem;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    padding: 0.3rem 0.8rem;
+    text-align: center;
+    white-space: nowrap;
+}

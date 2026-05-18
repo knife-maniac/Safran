@@ -14,3 +14,12 @@ function timeAgo(dateAsString) {
     const years = Math.floor(months / 12);
     return `${years} year${years === 1 ? '' : 's'} ago`;
 }
+
+function createCategoryTag(categoryName) {
+    const el = document.createElement('span');
+    el.className = 'category-tag';
+    el.textContent = categoryName;
+    el.dataset.category = categoryName;
+    return el;
+}
+

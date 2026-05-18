@@ -11,7 +11,7 @@ export interface IAppConfiguration {
 export interface IFeedConfiguration {
     url: string,
     name?: string,
-    categoryName?: string,
+    categoriesNames?: string[],
     rules?: IRules
 }
 
@@ -36,11 +36,11 @@ export const CONFIG: IAppConfiguration = {
             },
         },
         {
-            name: 'General News',
+            name: 'News',
             color: 'blue'
         },
         {
-            name: 'Technology News',
+            name: 'Tech',
             color: 'yellow'
         }
     ],
@@ -52,7 +52,7 @@ export const CONFIG: IAppConfiguration = {
             rules: { // These rules are applied only to items from this feed
                 maxNumberOfItems: 2
             },
-            categoryName: 'Entertainment'
+            categoriesNames: ['Entertainment']
         },
 
         // General News
@@ -62,7 +62,7 @@ export const CONFIG: IAppConfiguration = {
             rules: {
                 maxNumberOfItems: 2
             },
-            categoryName: 'General News'
+            categoriesNames: ['News']
         },
         {
             name: 'BBC',
@@ -70,7 +70,7 @@ export const CONFIG: IAppConfiguration = {
             rules: {
                 maxNumberOfItems: 2
             },
-            categoryName: 'General News'
+            categoriesNames: ['News']
         },
         {
             name: 'Ars Technica (general)',
@@ -78,7 +78,7 @@ export const CONFIG: IAppConfiguration = {
             rules: {
                 maxNumberOfItems: 2
             },
-            categoryName: 'General News'
+            categoriesNames: ['News']
         },
 
 
@@ -89,7 +89,7 @@ export const CONFIG: IAppConfiguration = {
             rules: {
                 maxNumberOfItems: 2
             },
-            categoryName: 'Technology news'
+            categoriesNames: ['Tech', 'News']
         },
         {
             name: 'TechCrunch',
@@ -97,7 +97,7 @@ export const CONFIG: IAppConfiguration = {
             rules: {
                 maxNumberOfItems: 2
             },
-            categoryName: 'Technology news'
+            categoriesNames: ['Tech', 'News']
         },
         {
             name: 'Hacker News',
@@ -105,7 +105,7 @@ export const CONFIG: IAppConfiguration = {
             rules: {
                 maxNumberOfItems: 2
             },
-            categoryName: 'Technology news'
+            categoriesNames: ['Tech', 'News']
         },
         {
             name: 'Hacker News (best)',
@@ -113,45 +113,52 @@ export const CONFIG: IAppConfiguration = {
             rules: {
                 maxNumberOfItems: 2
             },
-            categoryName: 'Technology news'
+            categoriesNames: ['Tech', 'News']
         },
 
-        // Non-categorized feeds
+        // Technology blogs
         {
             name: 'Sid\'s Blog',
             url: 'https://www.0xsid.com/blog/rss.xml',
             rules: {
                 maxNumberOfItems: 2
-            }
+            },
+            categoriesNames: ['Tech']
         },
         {
             name: 'Anil Dash',
             url: 'https://www.anildash.com/feed.xml',
             rules: {
                 maxNumberOfItems: 2
-            }
+            },
+            categoriesNames: ['Tech']
         },
         {
             name: 'Josh Blais',
             url: 'https://joshblais.com/index.xml',
             rules: {
                 maxNumberOfItems: 2
-            }
+            },
+            categoriesNames: ['Tech']
         },
         {
             name: 'Max van IJsselmuiden',
             url: 'https://www.maxvanijsselmuiden.nl/rss.xml',
             rules: {
                 maxNumberOfItems: 2
-            }
+            },
+            categoriesNames: ['Tech']
         },
         {
             name: 'Minas Karamanis',
             url: 'https://ergosphere.blog/atom.xml',
             rules: {
                 maxNumberOfItems: 2
-            }
+            },
+            categoriesNames: ['Tech']
         },
+
+        // Non-categorized feeds
         {
             name: 'マリウス',
             url: 'https://xn--gckvb8fzb.com/rss',

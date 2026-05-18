@@ -29,9 +29,20 @@ function createItemElement(item, feedData) {
 
     // Feed title
     const feedTitle = document.createElement('span');
-    feedTitle.textContent = feedData.feedTitle || 'Unknown Feed';
+    feedTitle.textContent = feedData.name || feedData.feedTitle || 'Unknown Feed';
     feedTitle.className = 'feed-title';
     feedTitleContainer.appendChild(feedTitle);
+
+    // Category tag
+    if (feedData.categoriesNames) {
+        const categoriesWrapper = document.createElement('div');
+        categoriesWrapper.className = 'categories-wrapper';
+        feedData.categoriesNames.forEach(cat => {
+            const tag = createCategoryTag(cat);
+            categoriesWrapper.appendChild(tag);
+        });
+        header.appendChild(categoriesWrapper);
+    }
 
     // Score badge (if score is available)
     if (item.score !== undefined) {
@@ -113,7 +124,7 @@ async function load() {
         if (!res.ok) throw new Error(await res.text());
 
         // Parse the JSON response
-        const { fetchedAt, items, feeds } = await res.json();
+        const { fetchedAt, categories, items, feeds } = await res.json();
         status.textContent = '';
         if (fetchedAt && fetchedEl) {
             fetchedEl.textContent = `Updated ${timeAgo(fetchedAt)}`;
@@ -123,7 +134,7 @@ async function load() {
 
         // Create and append list items for each feed item
         items.forEach(item => {
-            const feed = feeds.find(f => f.feedData.url === item.feedUrl);
+            const feed = feeds.find(f => f.feedData.url === item.feedUrl) || { feedData: {} };
             const li = createItemElement(item, feed.feedData);
             list.appendChild(li);
         });

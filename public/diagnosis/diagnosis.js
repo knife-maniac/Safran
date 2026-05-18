@@ -49,6 +49,18 @@ function createFeedElement(feedData, error) {
     // Append header to list item
     li.appendChild(header);
 
+    // Category tag
+    if (feedData.categoriesNames) {
+        // Wrapper for multiple categories
+        const categoriesWrapper = document.createElement('div');
+        categoriesWrapper.className = 'categories-wrapper';
+        feedData.categoriesNames.forEach(cat => {
+            const tag = createCategoryTag(cat);
+            categoriesWrapper.appendChild(tag);
+        });
+        li.appendChild(categoriesWrapper);
+    }
+
     // Description
     const description = document.createElement('span');
     description.className = 'description';

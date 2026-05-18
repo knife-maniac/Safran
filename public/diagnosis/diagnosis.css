@@ -22,3 +22,7 @@
 .item .item-header .feed-source-icon:focus {
     opacity: 1;
 }
+
+.item .categories-wrapper {
+    margin-left: none;
+}
