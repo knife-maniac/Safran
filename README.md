@@ -46,3 +46,11 @@ npm run build
 ```bash
 */n * * * * cd ~/path/to/my/repo && /path/to/node dist/index.js
 ```
+
+## Deployment
+
+Use `npm run deploy:client` to upload the contents of the `public/` folder to the FTP server configured in `.env`:
+
+```bash
+npm run deploy:client
+```
