@@ -15,11 +15,13 @@ function timeAgo(dateAsString) {
     return `${years} year${years === 1 ? '' : 's'} ago`;
 }
 
-function createCategoryTag(categoryName) {
-    const el = document.createElement('span');
-    el.className = 'category-tag';
-    el.textContent = categoryName;
-    el.dataset.category = categoryName;
-    return el;
+function createCategoryTag(categoryData) {
+    const tag = document.createElement('span');
+    tag.className = 'category-tag';
+    tag.style.color = categoryData.color;
+    tag.style.backgroundColor = categoryData.backgroundColor || `${categoryData.color}33`; // Add transparency if no background color
+    tag.textContent = categoryData.name;
+    tag.dataset.category = categoryData.name;
+    return tag;
 }
 

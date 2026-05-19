@@ -1,4 +1,4 @@
-function createFeedElement(feedData, error) {
+function createFeedElement(feedData, error, categories) {
     const li = document.createElement('li');
     li.className = `item ${error ? 'error' : 'success'}`;
 
@@ -54,8 +54,9 @@ function createFeedElement(feedData, error) {
         // Wrapper for multiple categories
         const categoriesWrapper = document.createElement('div');
         categoriesWrapper.className = 'categories-wrapper';
-        feedData.categoriesNames.forEach(cat => {
-            const tag = createCategoryTag(cat);
+        feedData.categoriesNames.forEach(categoryName => {
+            const category = categories.find(c => c.name === categoryName);
+            const tag = createCategoryTag(category);
             categoriesWrapper.appendChild(tag);
         });
         li.appendChild(categoriesWrapper);
@@ -86,7 +87,7 @@ async function load() {
         if (!res.ok) throw new Error(await res.text());
 
         // Parse the JSON response
-        const { feeds, fetchedAt, timeToFetchInMs } = await res.json();
+        const { fetchedAt, timeToFetchInMs, feeds, categories } = await res.json();
         status.textContent = '';
         if (fetchedAt && fetchedEl) {
             fetchedEl.textContent = `Updated ${timeAgo(fetchedAt)}, took ${(timeToFetchInMs / 1000).toFixed(2)} seconds`;
@@ -105,7 +106,7 @@ async function load() {
 
         // Create and append list feeds
         feeds.forEach(({ error, feedData }) => {
-            const li = createFeedElement(feedData, error);
+            const li = createFeedElement(feedData, error, categories);
             list.appendChild(li);
         });
     } catch (err) {

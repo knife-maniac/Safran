@@ -18,6 +18,7 @@ export interface IFeedConfiguration {
 interface IFeedCategory {
     name: string,
     color?: string,
+    backgroundColor?: string,
     rules?: IRules
 }
 
@@ -30,18 +31,21 @@ export const CONFIG: IAppConfiguration = {
     categories: [
         {
             name: 'Entertainment',
-            color: 'red',
+            color: '#f8c062',
+            backgroundColor: '#5c3711',
             rules: { // Rules are apply to all items from feed in the "Entertainment" category
                 removeItemsWithTitleIncluding: ['war', 'football', 'politics']
             },
         },
         {
             name: 'News',
-            color: 'blue'
+            color: '#a5c7fa',
+            backgroundColor: '#243e59'
         },
         {
             name: 'Tech',
-            color: 'yellow'
+            color: '#74e8ca',
+            backgroundColor: '#1f4e36'
         }
     ],
     feeds: [

@@ -1,4 +1,4 @@
-function createItemElement(item, feedData) {
+function createItemElement(item, feedData, categories) {
     const li = document.createElement('li');
     li.className = 'item';
 
@@ -37,8 +37,9 @@ function createItemElement(item, feedData) {
     if (feedData.categoriesNames) {
         const categoriesWrapper = document.createElement('div');
         categoriesWrapper.className = 'categories-wrapper';
-        feedData.categoriesNames.forEach(cat => {
-            const tag = createCategoryTag(cat);
+        feedData.categoriesNames.forEach(categoryName => {
+            const category = categories.find(c => c.name === categoryName);
+            const tag = createCategoryTag(category);
             categoriesWrapper.appendChild(tag);
         });
         header.appendChild(categoriesWrapper);
@@ -135,7 +136,7 @@ async function load() {
         // Create and append list items for each feed item
         items.forEach(item => {
             const feed = feeds.find(f => f.feedData.url === item.feedUrl) || { feedData: {} };
-            const li = createItemElement(item, feed.feedData);
+            const li = createItemElement(item, feed.feedData, categories);
             list.appendChild(li);
         });
     } catch (err) {
