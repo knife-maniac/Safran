@@ -18,8 +18,10 @@ function timeAgo(dateAsString) {
 function createCategoryTag(categoryData) {
     const tag = document.createElement('span');
     tag.className = 'category-tag';
-    tag.style.color = categoryData.color;
-    tag.style.backgroundColor = categoryData.backgroundColor || `${categoryData.color}33`; // Add transparency if no background color
+    if (categoryData.color && categoryData.backgroundColor) {
+        tag.style.color = categoryData.color;
+        tag.style.backgroundColor = categoryData.backgroundColor;
+    }
     tag.textContent = categoryData.name;
     tag.dataset.category = categoryData.name;
     return tag;

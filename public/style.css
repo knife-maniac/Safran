@@ -11,6 +11,8 @@ body {
     --accent-color: #ff9933;
     --accent-filter: brightness(0) saturate(100%) invert(79%) sepia(52%) saturate(3220%) hue-rotate(331deg) brightness(99%) contrast(108%);
     --link-color: #0070f3;
+    --default-tag-color: #f8c062;
+    --default-tag-background-color: #5c3711;
 }
 
 body[data-theme=dark] {
@@ -264,8 +266,9 @@ main {
 }
 
 .item .category-tag {
+    background-color: var(--default-tag-background-color);
     border-radius: 1rem;
-    color: var(--accent-color);
+    color: var(--default-tag-color);
     font-size: 0.9rem;
     padding: 0.3rem 1.2rem;
     text-align: center;
