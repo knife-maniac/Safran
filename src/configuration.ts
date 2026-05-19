@@ -81,7 +81,6 @@ export const CONFIG: IAppConfiguration = {
             categoriesNames: ['News']
         },
 
-
         // Technology News
         {
             name: 'Ars Technica (technology)',
@@ -92,23 +91,7 @@ export const CONFIG: IAppConfiguration = {
             categoriesNames: ['Tech', 'News']
         },
         {
-            name: 'TechCrunch',
-            url: 'https://techcrunch.com/feed/',
-            rules: {
-                maxNumberOfItems: 2
-            },
-            categoriesNames: ['Tech', 'News']
-        },
-        {
             name: 'Hacker News',
-            url: 'https://hnrss.org/frontpage',
-            rules: {
-                maxNumberOfItems: 2
-            },
-            categoriesNames: ['Tech', 'News']
-        },
-        {
-            name: 'Hacker News (best)',
             url: 'https://hnrss.org/best',
             rules: {
                 maxNumberOfItems: 2
