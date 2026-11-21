@@ -167,6 +167,7 @@ main {
 
 #items {
     column-gap: 2rem;
+    container-type: inline-size;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     list-style: none;
@@ -186,6 +187,14 @@ main {
     flex-direction: column;
     padding: 1rem 0;
     gap: 1rem;
+}
+
+/* Featured first item, only when the grid fits at least 2 columns (2 × 20rem + 2rem gap) */
+@container (min-width: 42rem) {
+    .item:first-child {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
 }
 
 .item>* {
