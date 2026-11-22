@@ -27,7 +27,7 @@ Hence a wealth of information creates a poverty of attention.<br/><br/>
 
 <!-- TODO: replace placeholder with real screenshot -->
 <p align="center">
-  <img src="https://placehold.co/800x450/1b1b1b/a5c7fa/png?text=Screenshot" width="800" alt="Safran web viewer showing a digest of news items" />
+  <img src="sample/screenshot.png" width="800" alt="Safran web viewer showing a digest of news items" />
 </p>
 
 ## The problem
