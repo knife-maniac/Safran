@@ -35,17 +35,25 @@ export interface IExtractionResult {
 }
 
 
-function getFeedIcon(feed: ParsedFeed, feedUrl: string): string | null {
-    let feedIcon = feed?.image?.url ?? null;
-    if (feedIcon === null) {
+const FAVICON_PATHS = ['/favicon.ico', '/favicon.png', '/apple-touch-icon.png'];
+const FAVICON_TIMEOUT_IN_MS = 5000;
+
+
+async function getFeedIcon(feed: ParsedFeed, feedUrl: string): Promise<string | null> {
+    if (feed?.image?.url) return feed.image.url;
+    // No icon in the feed: return the first conventional favicon location that serves an image
+    for (const path of FAVICON_PATHS) {
         try {
-            const url = new URL(feedUrl);
-            feedIcon = `${url.origin}/favicon.ico`;
+            const faviconUrl = new URL(path, feedUrl).href;
+            const response = await fetch(faviconUrl, { signal: AbortSignal.timeout(FAVICON_TIMEOUT_IN_MS) });
+            await response.body?.cancel();
+            // Some servers answer missing files with an HTML page, hence the content type check
+            if (response.ok && response.headers.get('content-type')?.startsWith('image/')) return faviconUrl;
         } catch (err) {
-            return null;
+            continue;
         }
     }
-    return feedIcon;
+    return null;
 }
 
 function getImageFromRaw(text: any): string | null {
@@ -78,7 +86,7 @@ export async function extractFeed(feed: IFeedConfiguration): Promise<IFeedExtrac
         const feedData: IExtractedFeedData = {
             ...feed,
             feedTitle: parsedFeed.title ?? '',
-            feedIcon: getFeedIcon(parsedFeed, feed.url) ?? '',
+            feedIcon: await getFeedIcon(parsedFeed, feed.url) ?? '',
             feedHomeLink: parsedFeed.url ?? feed.url ?? ''
         }
         const feedItems: IExtractedItem[] = (parsedFeed.items).map((item: FeedItem) => {
