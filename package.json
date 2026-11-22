@@ -11,7 +11,8 @@
   "scripts": {
     "build": "tsc",
     "deploy:feed": "npm run build && node dist/index.js",
-    "deploy:client": "tsx src/deploy-client.ts"
+    "deploy:client": "tsx src/deploy-client.ts",
+    "dev": "npm run build && node dist/dev-server.js"
   },
   "dependencies": {
     "@rowanmanning/feed-parser": "^2.1.3",

@@ -1,0 +1,372 @@
+{
+  "fetchedAt": "2026-11-22T07:00:12.000Z",
+  "timeToFetchInMs": 4321,
+  "categories": [
+    {
+      "name": "News",
+      "color": "#a5c7fa",
+      "backgroundColor": "#243e59"
+    },
+    {
+      "name": "Tech",
+      "color": "#74e8ca",
+      "backgroundColor": "#1f4e36"
+    },
+    {
+      "name": "Entertainment",
+      "color": "#f8c062",
+      "backgroundColor": "#5c3711",
+      "rules": {
+        "removeItemsWithTitleIncluding": [
+          "football"
+        ]
+      }
+    },
+    {
+      "name": "Unused category"
+    },
+    {
+      "name": "Science",
+      "color": "#d8b4fe",
+      "backgroundColor": "#3b1f59"
+    },
+    {
+      "name": "Comics",
+      "color": "#fde68a",
+      "backgroundColor": "#4d3d0f"
+    },
+    {
+      "name": "Music",
+      "color": "#f9a8d4",
+      "backgroundColor": "#591f3e"
+    },
+    {
+      "name": "Podcasts",
+      "color": "#fca5a5",
+      "backgroundColor": "#5c1d1d",
+      "rules": {
+        "maxNumberOfItems": 1
+      }
+    },
+    {
+      "name": "Weather",
+      "color": "#bae6fd",
+      "backgroundColor": "#0c3a4d"
+    },
+    {
+      "name": "A category with a rather long name to test wrapping"
+    }
+  ],
+  "feeds": [
+    {
+      "feedData": {
+        "name": "Daily News",
+        "url": "https://news.example.com/rss.xml",
+        "categoriesNames": [
+          "News"
+        ],
+        "rules": {
+          "maxNumberOfItems": 3
+        },
+        "feedTitle": "Daily News - World",
+        "feedIcon": "media/icon-blue.svg",
+        "feedHomeLink": "https://news.example.com/"
+      }
+    },
+    {
+      "feedData": {
+        "url": "https://tech.example.org/feed",
+        "categoriesNames": [
+          "Tech",
+          "News"
+        ],
+        "feedTitle": "Tech Weekly (no configured name)",
+        "feedIcon": "media/icon-green.svg",
+        "feedHomeLink": "https://tech.example.org/"
+      }
+    },
+    {
+      "feedData": {
+        "name": "Blog without icon nor home link",
+        "url": "https://blog.example.net/index.xml",
+        "categoriesNames": [
+          "Tech"
+        ],
+        "feedTitle": "A personal blog",
+        "feedIcon": null
+      }
+    },
+    {
+      "feedData": {
+        "name": "Cinema (silent)",
+        "url": "https://cinema.example.com/rss",
+        "categoriesNames": [
+          "Entertainment"
+        ],
+        "rules": {
+          "maxAgeInHours": 12,
+          "removeItemsWithTitleIncluding": [
+            "trailer",
+            "review"
+          ]
+        },
+        "feedTitle": "Cinema releases",
+        "feedIcon": "media/icon-orange.svg",
+        "feedHomeLink": "https://cinema.example.com/"
+      }
+    },
+    {
+      "error": "Failed to fetch feed 'Broken feed' (https://broken.example.com/rss) : fetch failed",
+      "feedData": {
+        "name": "Broken feed",
+        "url": "https://broken.example.com/rss",
+        "categoriesNames": [
+          "Entertainment"
+        ]
+      }
+    },
+    {
+      "error": "Failed to parse feed 'https://not-a-feed.example.com/' : unrecognized format",
+      "feedData": {
+        "url": "https://not-a-feed.example.com/"
+      }
+    },
+    {
+      "feedData": {
+        "name": "Science Daily",
+        "url": "https://science.example.com/rss",
+        "categoriesNames": [
+          "Science"
+        ],
+        "rules": {
+          "maxAgeInHours": 24
+        },
+        "feedTitle": "Science Daily - Latest",
+        "feedIcon": "media/icon-purple.svg",
+        "feedHomeLink": "https://science.example.com/"
+      }
+    },
+    {
+      "feedData": {
+        "name": "Space News",
+        "url": "https://space.example.org/atom.xml",
+        "categoriesNames": [
+          "Science",
+          "News"
+        ],
+        "feedTitle": "Space News",
+        "feedIcon": "media/icon-teal.svg",
+        "feedHomeLink": "https://space.example.org/"
+      }
+    },
+    {
+      "feedData": {
+        "name": "Webcomic",
+        "url": "https://comic.example.com/feed.xml",
+        "categoriesNames": [
+          "Comics"
+        ],
+        "feedTitle": "A daily webcomic",
+        "feedIcon": "media/icon-gray.svg",
+        "feedHomeLink": "https://comic.example.com/"
+      }
+    },
+    {
+      "feedData": {
+        "name": "Music Reviews",
+        "url": "https://music.example.net/rss",
+        "categoriesNames": [
+          "Music"
+        ],
+        "rules": {
+          "maxNumberOfItems": 2
+        },
+        "feedTitle": "Music Reviews",
+        "feedIcon": "media/icon-pink.svg",
+        "feedHomeLink": "https://music.example.net/"
+      }
+    },
+    {
+      "feedData": {
+        "name": "Podcast with a broken icon",
+        "url": "https://podcast.example.com/feed",
+        "categoriesNames": [
+          "Podcasts",
+          "Music",
+          "Entertainment"
+        ],
+        "feedTitle": "Podcast Weekly",
+        "feedIcon": "media/missing-icon.png",
+        "feedHomeLink": "https://podcast.example.com/"
+      }
+    },
+    {
+      "feedData": {
+        "name": "Local Weather (silent)",
+        "url": "https://weather.example.com/rss",
+        "categoriesNames": [
+          "Weather",
+          "News"
+        ],
+        "rules": {
+          "maxAgeInHours": 6
+        },
+        "feedTitle": "Weather forecasts",
+        "feedIcon": null,
+        "feedHomeLink": "https://weather.example.com/"
+      }
+    },
+    {
+      "feedData": {
+        "name": "Old blog (silent)",
+        "url": "https://old-blog.example.org/rss.xml",
+        "categoriesNames": [
+          "A category with a rather long name to test wrapping"
+        ],
+        "rules": {
+          "maxAgeInHours": 48,
+          "maxNumberOfItems": 5,
+          "removeItemsWithTitleIncluding": [
+            "sponsored",
+            "giveaway",
+            "newsletter",
+            "black friday",
+            "deal"
+          ]
+        },
+        "feedTitle": "An abandoned blog",
+        "feedIcon": "media/icon-blue.svg",
+        "feedHomeLink": "https://old-blog.example.org/"
+      }
+    },
+    {
+      "error": "Failed to fetch feed 'Slow server' (https://slow.example.com/feed) : The operation was aborted due to timeout",
+      "feedData": {
+        "name": "Slow server",
+        "url": "https://slow.example.com/feed",
+        "categoriesNames": [
+          "Science"
+        ]
+      }
+    },
+    {
+      "error": "Failed to fetch feed 'Moved feed' (https://moved.example.net/rss) : Status code 404 Not Found",
+      "feedData": {
+        "name": "Moved feed",
+        "url": "https://moved.example.net/rss",
+        "categoriesNames": [
+          "Music"
+        ]
+      }
+    }
+  ],
+  "items": [
+    {
+      "feedUrl": "https://science.example.com/rss",
+      "title": "Item with a wide banner image",
+      "link": "https://science.example.com/a/1",
+      "description": "Researchers describe something new, in a description that is a bit longer than the others to see how it is displayed when it spans more than one line.",
+      "image": "media/banner.svg",
+      "pubDate": "2026-11-22T06:55:00.000Z"
+    },
+    {
+      "feedUrl": "https://news.example.com/rss.xml",
+      "title": "Item with a landscape image and a description",
+      "link": "https://news.example.com/articles/1",
+      "description": "A short description of the article, as provided by the feed.",
+      "image": "media/landscape.svg",
+      "pubDate": "2026-11-22T06:45:00.000Z"
+    },
+    {
+      "feedUrl": "https://comic.example.com/feed.xml",
+      "title": "Comic #1234",
+      "link": "https://comic.example.com/1234",
+      "image": "media/comic.svg",
+      "pubDate": "2026-11-22T05:00:00.000Z"
+    },
+    {
+      "feedUrl": "https://tech.example.org/feed",
+      "title": "Item from a feed with two categories and a portrait image",
+      "link": "https://tech.example.org/posts/2",
+      "image": "media/portrait.svg",
+      "pubDate": "2026-11-22T04:10:00.000Z"
+    },
+    {
+      "feedUrl": "https://music.example.net/rss",
+      "title": "Item with a tall image",
+      "link": "https://music.example.net/reviews/1",
+      "image": "media/tall.svg",
+      "pubDate": "2026-11-22T03:20:00.000Z"
+    },
+    {
+      "feedUrl": "https://space.example.org/atom.xml",
+      "title": "Item from a feed with two categories, without image",
+      "link": "https://space.example.org/posts/1",
+      "image": null,
+      "pubDate": "2026-11-22T01:45:00.000Z"
+    },
+    {
+      "feedUrl": "https://podcast.example.com/feed",
+      "title": "Episode 42: item from a feed with a broken icon and three categories",
+      "link": "https://podcast.example.com/episodes/42",
+      "image": "media/square.svg",
+      "pubDate": "2026-11-21T23:10:00.000Z"
+    },
+    {
+      "feedUrl": "https://news.example.com/rss.xml",
+      "title": "A very long title that should wrap nicely over several lines without breaking the layout of the item, even on narrow mobile screens where space is limited",
+      "link": "https://news.example.com/articles/3",
+      "image": null,
+      "pubDate": "2026-11-21T22:30:00.000Z"
+    },
+    {
+      "feedUrl": "https://science.example.com/rss",
+      "title": "Item with a tiny image",
+      "link": "https://science.example.com/a/2",
+      "image": "media/tiny.svg",
+      "pubDate": "2026-11-21T20:00:00.000Z"
+    },
+    {
+      "feedUrl": "https://blog.example.net/index.xml",
+      "title": "Item without image from a feed without icon",
+      "link": "https://blog.example.net/posts/4",
+      "image": null,
+      "pubDate": "2026-11-21T18:00:00.000Z"
+    },
+    {
+      "feedUrl": "https://blog.example.net/index.xml",
+      "title": "Ünïcödé, émojis 🎉 and “quotes” in a title",
+      "link": "https://blog.example.net/posts/5",
+      "image": null,
+      "pubDate": "2026-11-21T15:30:00.000Z"
+    },
+    {
+      "feedUrl": "https://tech.example.org/feed",
+      "title": "Item with a square image",
+      "link": "https://tech.example.org/posts/5",
+      "image": "media/square.svg",
+      "pubDate": "2026-11-21T12:00:00.000Z"
+    },
+    {
+      "feedUrl": "https://music.example.net/rss",
+      "title": "Item with a landscape image, published two days ago",
+      "link": "https://music.example.net/reviews/2",
+      "image": "media/landscape.svg",
+      "pubDate": "2026-11-20T09:00:00.000Z"
+    },
+    {
+      "feedUrl": "https://comic.example.com/feed.xml",
+      "title": "Comic #1233",
+      "link": "https://comic.example.com/1233",
+      "image": "media/comic.svg",
+      "pubDate": "2026-11-20T05:00:00.000Z"
+    },
+    {
+      "feedUrl": "https://news.example.com/rss.xml",
+      "title": "Item with a missing image (broken path)",
+      "link": "https://news.example.com/articles/6",
+      "image": "media/missing.jpg",
+      "pubDate": null
+    }
+  ]
+}

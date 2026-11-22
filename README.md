@@ -75,6 +75,8 @@ Today's feeds are built to capture attention, not to inform. Infinite scrolling 
 
 If a feed stays silent, check the viewer's **Diagnosis** page (`/diagnosis/`): it lists the status of every feed, broken ones first.
 
+To preview the viewer locally, run `npm run dev` and open http://localhost:8080. It serves [`public/`](public) with the sample digest from [`sample/`](sample); use `npm run dev -- dist` to preview your last real digest instead.
+
 ## Limitations
 
 - **FTP only**: the digest and the viewer are deployed over FTP(S). Other targets (local folder, SFTP, S3…) are not supported yet.
