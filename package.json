@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc",
     "deploy:feed": "npm run build && node dist/index.js",
-    "deploy:client": "tsx src/deploy-client.ts",
+    "deploy:client": "npm run build && node dist/deploy-client.js",
     "dev": "npm run build && node dist/dev-server.js"
   },
   "dependencies": {
