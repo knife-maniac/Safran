@@ -43,7 +43,7 @@ Today's feeds are built to capture attention, not to inform. Infinite scrolling 
 | Viral, short-form content | **High signal-to-noise**: a few hand-picked sources, capped per feed |
 | Opaque ranking algorithm  | **Chronological** order, tagged by topic                             |
 | Likes, views, comments    | **Content only**: title, image, link to the source                   |
-| Tracking & profiling      | **Self-hosted**: static files, no account, no trackers               |
+| Tracking & profiling      | **Self-hosted**: static files and images, no account, no trackers    |
 
 ## Getting started
 
@@ -66,7 +66,7 @@ Today's feeds are built to capture attention, not to inform. Infinite scrolling 
 4. Deploy the web viewer, then build and publish a first digest:
    ```bash
    npm run deploy:client   # upload the web viewer (public/), once
-   npm run deploy:feed     # build, fetch all feeds and upload feed.json
+   npm run deploy:feed     # build, fetch all feeds and upload feed.json with its images
    ```
 5. Schedule the digest with cron (here, every morning at 7:00):
    ```bash
@@ -82,7 +82,6 @@ If a feed stays silent, check the viewer's **Diagnosis** page (`/diagnosis/`): i
 - **No category rules yet**: categories can declare `rules`, but these are not applied yet.
 - **No memory between runs**: each run only sees what the feeds currently publish.
 - **Public by default**: anyone who knows your viewer's URL can read your digest.
-- **Third-party images**: article images and feed icons are loaded directly from the publishers' websites, which can therefore see your IP address when you read the digest.
 
 ## License
 

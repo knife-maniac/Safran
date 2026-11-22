@@ -8,7 +8,7 @@ export interface IRules {
     removeItemsWithTitleIncluding?: string[]
 }
 
-interface IFeedTransformationResult {
+export interface IFeedTransformationResult {
     error?: string;
     feedData?: IExtractedFeedData;
 }

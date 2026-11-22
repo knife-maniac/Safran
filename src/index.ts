@@ -12,12 +12,12 @@ async function main() {
     const { feeds, items } = transform(data, CONFIG);
 
     // Load
-    load(JSON.stringify({
+    load({
         fetchedAt,
         timeToFetchInMs,
         categories: CONFIG.categories,
-        items,
-        feeds
-    }, null, 2));
+        feeds,
+        items
+    });
 };
 main();

@@ -20,7 +20,7 @@ function createFeedElement(feedData, error, categories) {
     if (feedData.feedIcon) {
         let icon = document.createElement('img');
         icon.className = 'feed-icon';
-        icon.src = feedData.feedIcon;
+        icon.src = `../${feedData.feedIcon}`;
         icon.alt = feedData.name ? `${feedData.name} icon` : 'Feed icon';
         feedTitleContainer.appendChild(icon);
         icon.onerror = () => {
