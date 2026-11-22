@@ -1,56 +1,89 @@
-# Safran
-> Self-hosted Aggregator For Rss/Atom News
+<div align="center">
 
-This is a self-hosted solution to consume RSS feeds. It allows you to declare, fetch, parse, format, aggregate, grade, elect, sort, deploy and view them.
+<img src="public/images/icon.svg" alt="Safran logo" width="96" />
 
+<h1>Safran</h1>
 
-## Architecture
-```mermaid
-architecture-beta
-    group safran(cloud)[Safran]
+<h3>Your news, on your server, without the scroll.</h3>
 
-    service feeds(cloud)[RSS and Atom Feeds] in safran
-    service server(server)[NodeJs Server] in safran
-    service json(database)[JSON Aggregated Feed] in safran
-    service viewer(internet)[Web Viewer] in safran
+<blockquote>
+What information consumes is rather obvious: it consumes the attention of its recipients.<br/>
+Hence a wealth of information creates a poverty of attention.<br/><br/>
+— Herbert A. Simon, 1971
+</blockquote>
 
-    feeds:T --> B:server
-    server:R --> L:json
-    json:B --> T:viewer
-```
+<br>
 
+[![License: ISC](https://img.shields.io/badge/license-ISC-blue)](LICENSE)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Self-hosted](https://img.shields.io/badge/self--hosted-yes-2ea44f)
+![Last commit](https://img.shields.io/github/last-commit/knife-maniac/Safran)
 
-## Set up
-1. Install all dependencies:
-```bash
-npm install
-```
+[**The problem**](#the-problem) • [**How Safran answers it**](#how-safran-answers-it) • [**Getting started**](#getting-started) • [**Limitations**](#limitations)
 
-2. Configure RSS feeds in file `src/feed-configuration.ts`.
+</div>
 
-3. Add a '.env' file at the root, with FTP deployment configuration:
-```bash
-FTP_HOST={ftp.my-server.com}
-FTP_PATH={/path/on/server}
-FTP_USER={username}
-FTP_PASSWORD={password}
-FTP_SECURE={true|false}
-```
+**Safran** (_**S**elf-hosted **A**ggregator **F**or **R**ss/**A**tom **N**ews_) fetches the RSS and Atom feeds you choose, trims them with your own rules, and publishes a small, finite digest to a static web page you host yourself.
 
-4. Build the solution:
-```bash
-npm run build
-```
+<!-- TODO: replace placeholder with real screenshot -->
+<p align="center">
+  <img src="https://placehold.co/800x450/1b1b1b/a5c7fa/png?text=Screenshot" width="800" alt="Safran web viewer showing a digest of news items" />
+</p>
 
-5. Add crontab to run the script periodically (example below is every `n` minutes):
-```bash
-*/n * * * * cd ~/path/to/my/repo && /path/to/node dist/index.js
-```
+## The problem
 
-## Deployment
+Today's feeds are built to capture attention, not to inform. Infinite scrolling and instant gratification erode our attention span; opaque algorithms lock us into echo chambers; and behind the scenes, fingerprinting and behavioural metadata are used to map our social networks, build psychographic profiles and sell access to our vulnerabilities, whether to push harmful products or deny needed services.
 
-Use `npm run deploy:client` to upload the contents of the `public/` folder to the FTP server configured in `.env`:
+## How Safran answers it
 
-```bash
-npm run deploy:client
-```
+| Engagement-driven feed    | Safran                                                               |
+| :------------------------ | :------------------------------------------------------------------- |
+| Infinite scroll           | **Finite batch**: a page that ends                                   |
+| Real-time, always "new"   | **Scheduled digest**, delivered asynchronously by cron               |
+| Viral, short-form content | **High signal-to-noise**: a few hand-picked sources, capped per feed |
+| Opaque ranking algorithm  | **Chronological** order, tagged by topic                             |
+| Likes, views, comments    | **Content only**: title, image, link to the source                   |
+| Tracking & profiling      | **Self-hosted**: static files, no account, no trackers               |
+
+## Getting started
+
+**Requirements:** Node.js 20+ and a web host reachable over FTP(S).
+
+1. Clone the repository and install dependencies:
+   ```bash
+   git clone https://github.com/knife-maniac/Safran.git && cd Safran
+   npm install
+   ```
+2. Configure your feeds, categories and rules in [`src/configuration.ts`](src/configuration.ts).
+3. Add a `.env` file at the root with your FTP settings:
+   ```bash
+   FTP_HOST=ftp.my-server.com
+   FTP_PATH=/path/on/server
+   FTP_USER=username
+   FTP_PASSWORD=password
+   FTP_SECURE=true
+   ```
+4. Deploy the web viewer, then build and publish a first digest:
+   ```bash
+   npm run deploy:client   # upload the web viewer (public/), once
+   npm run deploy:feed     # build, fetch all feeds and upload feed.json
+   ```
+5. Schedule the digest with cron (here, every morning at 7:00):
+   ```bash
+   0 7 * * * cd ~/path/to/Safran && /path/to/node dist/index.js
+   ```
+
+If a feed stays silent, check the viewer's **Diagnosis** page (`/diagnosis/`): it lists the status of every feed, broken ones first.
+
+## Limitations
+
+- **FTP only**: the digest and the viewer are deployed over FTP(S). Other targets (local folder, SFTP, S3…) are not supported yet.
+- **Rebuild after configuring**: the configuration is written in TypeScript; run `npm run build` (or `npm run deploy:feed`) after editing it.
+- **No category rules yet**: categories can declare `rules`, but these are not applied yet.
+- **No memory between runs**: each run only sees what the feeds currently publish.
+- **Public by default**: anyone who knows your viewer's URL can read your digest.
+- **Third-party images**: article images and feed icons are loaded directly from the publishers' websites, which can therefore see your IP address when you read the digest.
+
+## License
+
+Safran is released under the [ISC License](LICENSE).
