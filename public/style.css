@@ -217,10 +217,6 @@ main {
     text-decoration: underline;
 }
 
-.item .description {
-    display: none;
-}
-
 .item .categories-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -229,11 +225,12 @@ main {
 }
 
 .item .category-tag {
-    display: none;
     background-color: var(--default-tag-background-color);
     border-radius: 1rem;
     color: var(--default-tag-color);
+    overflow: hidden;
     padding: 0.3rem 1.2rem;
     text-align: center;
+    text-overflow: ellipsis;
     white-space: nowrap;
 }

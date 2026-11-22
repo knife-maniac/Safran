@@ -1,13 +1,28 @@
+html {
+    --background-color-success: #042500;
+    --background-color-success-contrast: #9aff8f;
+    --background-color-error: #3d0000;
+    --background-color-error-contrast: #ff9494;
+    --background-contrast-color: #9f9fa9;
+}
+
+#items {
+    column-gap: 1rem;
+    row-gap: 1rem;
+}
+
+.item {
+    padding: 1rem;
+}
+
 .item.success {
     background-color: var(--background-color-success);
     color: var(--background-color-success-contrast);
-    border-color: var(--background-color-success-contrast);
 }
 
 .item.error {
     background-color: var(--background-color-error);
     color: var(--background-color-error-contrast);
-    border-color: var(--background-color-error-contrast);
 }
 
 .item .item-header .feed-source-icon {
